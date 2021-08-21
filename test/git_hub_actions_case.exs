@@ -22,8 +22,8 @@ defmodule GitHubActionsCase do
       import GitHubActionsCase
 
       def assert_run(file, opts \\ unquote(default)) do
-        assert capture_io(fn -> unquote(module).run(opts) end) ==
-                 "\e[32m* creating \e[0mtest/tmp/#{file}\e[0m\n"
+        assert capture_io(fn -> unquote(module).run(opts) end) =~
+                 ~r|creating.+test/tmp/#{file}|
 
         assert file |> tmp() |> File.read!() == file |> fixture() |> File.read!()
       end
