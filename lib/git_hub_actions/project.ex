@@ -15,7 +15,7 @@ defmodule GitHubActions.Project do
   ## Examples
 
       iex> Project.elixir()
-      "~> 1.10"
+      "~> 1.11"
   """
   @spec elixir :: String.t()
   def elixir do

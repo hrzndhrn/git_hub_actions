@@ -14,5 +14,5 @@ defmodule GitHubActions.Sigils do
       "${{ github.sha }}"
   """
   @spec sigil_e(String.t(), list()) :: String.t()
-  def sigil_e(string, _opts \\ []), do: "${{ #{string} }}"
+  def sigil_e(string, _opts \\ []), do: String.replace("${{ #{string} }}", "\\\n", "")
 end

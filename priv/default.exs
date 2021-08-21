@@ -216,7 +216,10 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Check code format",
-          if: ~e[contains(matrix.elixir, '#{Versions.latest(:elixir)}')],
+          if: ~e"""
+          contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
+          contains(matrix.otp, '#{Versions.latest(:otp)}')\
+          """,
           run: mix(:format, check_formatted: true, env: :test)
         ]
     end
@@ -230,6 +233,10 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Lint code",
+          if: ~e"""
+          contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
+          contains(matrix.otp, '#{Versions.latest(:otp)}')\
+          """,
           run: mix(:credo, strict: true, env: :test)
         ]
     end

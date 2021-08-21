@@ -17,8 +17,8 @@ config :steps,
 config :mix,
   env: nil
 
-# Specifies for which OSs jobs are generated. Possible values `:linux`,
-# `:windows` and `:macos`.
+# Specifies for which OSs jobs are generated. Possible values :linux,
+# :windows and :macos.
 config :jobs, [:linux]
 
 # Specifies the linux distribution.
