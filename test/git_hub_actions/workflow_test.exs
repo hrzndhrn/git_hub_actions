@@ -171,12 +171,14 @@ defmodule GitHubActions.WorkflowTest do
                      ],
                      [
                        name: "Check code format",
-                       if: "${{ contains(matrix.elixir, '1.12.2') && contains(matrix.otp, '24.0') }}",
+                       if:
+                         "${{ contains(matrix.elixir, '1.12.2') && contains(matrix.otp, '24.0') }}",
                        run: "MIX_ENV=test mix format --check-formatted"
                      ],
                      [
                        name: "Lint code",
-                       if: "${{ contains(matrix.elixir, '1.12.2') && contains(matrix.otp, '24.0') }}",
+                       if:
+                         "${{ contains(matrix.elixir, '1.12.2') && contains(matrix.otp, '24.0') }}",
                        run: "MIX_ENV=test mix credo --strict"
                      ],
                      [

@@ -63,7 +63,7 @@ defmodule GitHubActions.MixProject do
       flags: [:error_handling],
       plt_add_apps: [:mix],
       plt_file: {:no_warn, "test/support/plts/dialyzer.plt"},
-      ignore_warnings: ".dialyzer_ignore.exs",
+      ignore_warnings: ".dialyzer_ignore.exs"
     ]
   end
 
