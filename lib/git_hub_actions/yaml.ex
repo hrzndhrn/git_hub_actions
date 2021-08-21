@@ -11,7 +11,9 @@ defmodule GitHubActions.Yaml do
   end
 
   defp do_encode(data, lines, _depth) when is_binary(data) do
-    [data | lines]
+    string = if num_or_version?(data), do: "'#{data}'", else: data
+
+    [string | lines]
   end
 
   defp do_encode(data, lines, _depth) when is_number(data) do
@@ -25,6 +27,8 @@ defmodule GitHubActions.Yaml do
   end
 
   defp do_encode([{key, item} | data], lines, depth) when is_binary(item) do
+    item = if num_or_version?(item), do: "'#{item}'", else: item
+
     case lines?(item) do
       true ->
         add = indent_heredoc(key, item, depth)
@@ -84,4 +88,10 @@ defmodule GitHubActions.Yaml do
   defp lines?(string), do: String.contains?(string, "\n")
 
   defp newline(string), do: "#{string}\n"
+
+  defp num_or_version?(string) do
+    string
+    |> String.split(".")
+    |> Enum.all?(fn part -> part =~ ~r/^\d+$/ end)
+  end
 end
