@@ -8,7 +8,7 @@ is an early beta and is currently experimental.
 `GitHubActions` can be installed as an archive.
 
 ```shell
-$> mix arcive.install hex :git_hub_actions
+$> mix archive.install hex git_hub_actions
 ```
 Or, as a dependency.
 
