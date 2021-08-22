@@ -43,13 +43,13 @@ See `GitHubActions.workflow` for how to write a workflow script.
 The `mix` task `gha` comes with the options `--workflow` and `--config` to use
 custom scripts. The config will be merged into the default config.
 
-It is also possible to setup a `.gha` directory in your home directory or in the
+It is also possible to setup a `./.gha` directory in your home directory or in the
 project root directory. The `mix` task `gha.config` with the options
 `--gen-global` and `--gen-local` will copy the defaults to the related location.
 
 The configuration will be read from `priv/config.exs` and afterward updated
-by `~/.gha/config.exs` and then by `.gha/config.exs`.
+by `~/.gha/config.exs` and then by `./.gha/config.exs`.
 
-`GitHubActions` will search the workflow script in the order `.gha/default.exs`,
+`GitHubActions` will search the workflow script in the order `./.gha/default.exs`,
 `~/.gha/default.exs` and `priv/default.exs`. The name of the default script can
 be changed in the configuration und `input: [default: "my_workflow.exs"]`.

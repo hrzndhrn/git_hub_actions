@@ -14,10 +14,16 @@ The `linux` job gets the following steps:
 - `get_deps`
 - `compile_deps`
 - `compile`, with `--warnings-as-errors`
-- `check_code_format`, can be suppressed by config
-- `lint_code`, when `:credo` is part of the dependencies
+- `check_code_format`, can be suppressed by config, executes only for the latest
+   Elixir/OTP version
+- `lint_code`, when `:credo` is part of the dependencies, executes only for the
+  latest Elixir/OTP version
 - `run_tests`
 - `dialyxir`, when `:dialyxir` is part of the dependencies
+
+The workflow script also contains jobs for `macOS` and `Windows`.  To activate
+these jobs, set `config :jobs, [:linux, :macos, :windows]` in the config.  The
+jobs for `macOS` and `Windows` use just the latest Elixir/OTP version.
 
 ## config.exs
 
@@ -361,7 +367,10 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Check code format",
-          if: ~e[contains(matrix.elixir, '#{Versions.latest(:elixir)}')],
+          if: ~e"""
+          contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
+          contains(matrix.otp, '#{Versions.latest(:otp)}')\
+          """,
           run: mix(:format, check_formatted: true, env: :test)
         ]
     end
@@ -375,6 +384,10 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Lint code",
+          if: ~e"""
+          contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
+          contains(matrix.otp, '#{Versions.latest(:otp)}')\
+          """,
           run: mix(:credo, strict: true, env: :test)
         ]
     end
