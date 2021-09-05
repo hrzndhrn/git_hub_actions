@@ -98,7 +98,7 @@ defmodule GitHubActions.Default do
   defp setup_elixir(:linux) do
     [
       name: "Setup Elixir",
-      uses: "erlef/setup-elixir@v1",
+      uses: "erlef/setup-beam@v1",
       with: [
         elixir_version: ~e[matrix.elixir],
         otp_version: ~e[matrix.otp]

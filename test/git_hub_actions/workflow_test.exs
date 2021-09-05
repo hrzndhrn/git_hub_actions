@@ -45,11 +45,11 @@ defmodule GitHubActions.WorkflowTest do
                    "runs-on": "ubuntu-latest",
                    strategy: [
                      matrix: [
-                       elixir: ["1.10.4", "1.11.4", "1.12.2"],
+                       elixir: ["1.10.4", "1.11.4", "1.12.3"],
                        otp: ["21.3", "22.3", "23.3", "24.0"],
                        exclude: [
                          [elixir: "1.10.4", otp: "24.0"],
-                         [elixir: "1.12.2", otp: "21.3"]
+                         [elixir: "1.12.3", otp: "21.3"]
                        ]
                      ]
                    ]
@@ -95,10 +95,10 @@ defmodule GitHubActions.WorkflowTest do
                    "runs-on": "ubuntu-latest",
                    strategy: [
                      matrix: [
-                       elixir: ["1.11.4", "1.12.2"],
+                       elixir: ["1.11.4", "1.12.3"],
                        otp: ["21.3", "22.3", "23.3", "24.0"],
                        exclude: [
-                         [elixir: "1.12.2", otp: "21.3"]
+                         [elixir: "1.12.3", otp: "21.3"]
                        ]
                      ]
                    ],
@@ -109,7 +109,7 @@ defmodule GitHubActions.WorkflowTest do
                      ],
                      [
                        name: "Setup Elixir",
-                       uses: "erlef/setup-elixir@v1",
+                       uses: "erlef/setup-beam@v1",
                        with: [
                          "elixir-version": "${{ matrix.elixir }}",
                          "otp-version": "${{ matrix.otp }}"
@@ -172,13 +172,13 @@ defmodule GitHubActions.WorkflowTest do
                      [
                        name: "Check code format",
                        if:
-                         "${{ contains(matrix.elixir, '1.12.2') && contains(matrix.otp, '24.0') }}",
+                         "${{ contains(matrix.elixir, '1.12.3') && contains(matrix.otp, '24.0') }}",
                        run: "MIX_ENV=test mix format --check-formatted"
                      ],
                      [
                        name: "Lint code",
                        if:
-                         "${{ contains(matrix.elixir, '1.12.2') && contains(matrix.otp, '24.0') }}",
+                         "${{ contains(matrix.elixir, '1.12.3') && contains(matrix.otp, '24.0') }}",
                        run: "MIX_ENV=test mix credo --strict"
                      ],
                      [

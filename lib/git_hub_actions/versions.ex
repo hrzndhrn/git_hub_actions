@@ -60,7 +60,7 @@ defmodule GitHubActions.Versions do
       ** (ArgumentError) latest/1 expected a list or table of versions or a key, got: [a: "1"]
 
       iex> Versions.latest(:elixir)
-      #Version<1.12.2>
+      #Version<1.12.3>
 
       iex> Versions.latest(:otp)
       #Version<24.0>
@@ -147,7 +147,7 @@ defmodule GitHubActions.Versions do
       iex> minor_versions = Versions.latest_minor(:elixir)
       iex> Enum.map(minor_versions, &to_string/1)
       ["1.0.5", "1.1.1", "1.2.6", "1.3.4", "1.4.5", "1.5.3", "1.6.6", "1.7.4",
-       "1.8.2", "1.9.4", "1.10.4", "1.11.4", "1.12.2" ]
+       "1.8.2", "1.9.4", "1.10.4", "1.11.4", "1.12.3" ]
 
       iex> minor_versions = Versions.latest_minor(:otp)
       iex> Enum.map(minor_versions, &to_string/1)
@@ -238,7 +238,7 @@ defmodule GitHubActions.Versions do
 
       iex> major_versions = Versions.latest_major(:elixir)
       iex> Enum.map(major_versions, &to_string/1)
-      ["1.12.2"]
+      ["1.12.3"]
 
       iex> major_versions = Versions.latest_major(:otp)
       iex> Enum.map(major_versions, &to_string/1)
@@ -537,7 +537,7 @@ defmodule GitHubActions.Versions do
 
   ## Examples
 
-      iex> Versions.compatible?(elixir: "1.12.2", otp: "24.0")
+      iex> Versions.compatible?(elixir: "1.12.3", otp: "24.0")
       true
 
       iex> Versions.compatible?(elixir: "1.6.0", otp: "24.0")
@@ -588,7 +588,7 @@ defmodule GitHubActions.Versions do
   ## Examples
 
       iex> versions = Versions.incompatible(
-      ...>   elixir: ["1.9.4", "1.10.4", "1.11.4", "1.12.2"],
+      ...>   elixir: ["1.9.4", "1.10.4", "1.11.4", "1.12.3"],
       ...>   otp: ["21.3", "22.3", "23.3", "24.0"]
       ...> )
       iex> for [{k1, v1}, {k2, v2}] <- versions do
@@ -598,7 +598,7 @@ defmodule GitHubActions.Versions do
         [elixir: "1.9.4", otp: "23.3"],
         [elixir: "1.9.4", otp: "24.0"],
         [elixir: "1.10.4", otp: "24.0"],
-        [elixir: "1.12.2", otp: "21.3"]
+        [elixir: "1.12.3", otp: "21.3"]
       ]
   """
   def incompatible(versions \\ from_config(), [{key1, versions1}, {key2, versions2}])
@@ -652,7 +652,7 @@ defmodule GitHubActions.Versions do
 
       iex> matrix = Versions.matrix(elixir: ">= 1.9.0", otp: ">= 22.0.0")
       iex> Enum.map(matrix[:elixir], &to_string/1)
-      ["1.9.4", "1.10.4", "1.11.4", "1.12.2"]
+      ["1.9.4", "1.10.4", "1.11.4", "1.12.3"]
       iex> Enum.map(matrix[:otp], &to_string/1)
       ["22.3", "23.3", "24.0"]
       iex> for [{k1, v1}, {k2, v2}] <- matrix[:exclude] do
