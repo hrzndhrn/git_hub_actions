@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 2021/09/23
+
+- Add Erlang version `24.1` to config
+
 ## 0.1.1 2021/09/05
 
 - Use `erlef/setup-beam` instead of `erlef/setup-elixir`

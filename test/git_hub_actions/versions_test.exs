@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["24.0"], elixir: ["1.11.4", "1.12.0/3"]]
+             [otp: ["24.0/1"], elixir: ["1.11.4", "1.12.0/3"]]
   end
 
   describe "get/2" do
@@ -137,7 +137,8 @@ defmodule GitHubActions.VersionsTest do
                "23.1",
                "23.2",
                "23.3",
-               "24.0"
+               "24.0",
+               "24.1"
              ]
     end
   end
@@ -259,7 +260,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 21, minor: 3},
                %Version{major: 22, minor: 3},
                %Version{major: 23, minor: 3},
-               %Version{major: 24, minor: 0}
+               %Version{major: 24, minor: 1}
              ]
     end
   end
@@ -286,7 +287,8 @@ defmodule GitHubActions.VersionsTest do
       assert Versions.compatible(@versions, :otp, elixir: "1.11.4") ==
                otp ++
                  [
-                   %Version{major: 24, minor: 0}
+                   %Version{major: 24, minor: 0},
+                   %Version{major: 24, minor: 1}
                  ]
     end
 
@@ -304,7 +306,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 23, minor: 1},
                %Version{major: 23, minor: 2},
                %Version{major: 23, minor: 3},
-               %Version{major: 24, minor: 0}
+               %Version{major: 24, minor: 0},
+               %Version{major: 24, minor: 1}
              ]
     end
 
@@ -328,12 +331,12 @@ defmodule GitHubActions.VersionsTest do
   describe "compatible?/3" do
     batch "returns true for compatible version" do
       prove Versions.compatible?(@versions, elixir: "1.11.4", otp: "21.3") == true
-      prove Versions.compatible?(@versions, elixir: "1.12", otp: "24.0") == true
+      prove Versions.compatible?(@versions, elixir: "1.12", otp: "24.1") == true
     end
 
     batch "returns false for incompatible version" do
       prove Versions.compatible?(@versions, elixir: "1.11.4", otp: "19.0") == false
-      prove Versions.compatible?(@versions, elixir: "1.6", otp: "24.0") == false
+      prove Versions.compatible?(@versions, elixir: "1.6", otp: "24.1") == false
     end
   end
 
@@ -353,7 +356,7 @@ defmodule GitHubActions.VersionsTest do
                  elixir: %Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %Version{major: 24, minor: 0},
+                 otp: %Version{major: 24, minor: 1},
                  elixir: %Version{major: 1, minor: 10, patch: 4}
                ]
              ]
@@ -425,10 +428,10 @@ defmodule GitHubActions.VersionsTest do
                end)
            ] == [
              elixir_version: ["1.10.4", "1.11.4", "1.12.3"],
-             otp_version: ["21.3", "22.3", "23.3", "24.0"],
+             otp_version: ["21.3", "22.3", "23.3", "24.1"],
              exclude: [
                [elixir_version: "1.12.3", otp_version: "21.3"],
-               [elixir_version: "1.10.4", otp_version: "24.0"]
+               [elixir_version: "1.10.4", otp_version: "24.1"]
              ]
            ]
   end
