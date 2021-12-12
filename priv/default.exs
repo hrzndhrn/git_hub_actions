@@ -39,6 +39,7 @@ defmodule GitHubActions.Default do
         check_code_format(),
         lint_code(),
         run_tests(os),
+        run_coverage(os),
         dialyxir()
       ]
     )
@@ -57,7 +58,8 @@ defmodule GitHubActions.Default do
         get_deps(),
         compile_deps(os),
         compile(os),
-        run_tests(os)
+        run_tests(os),
+        run_coverage(os)
       ]
     )
   end
@@ -76,7 +78,8 @@ defmodule GitHubActions.Default do
         get_deps(),
         compile_deps(os),
         compile(os),
-        run_tests(os)
+        run_tests(os),
+        run_coverage(os)
       ]
     )
   end
@@ -216,10 +219,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Check code format",
-          if: ~e"""
-          contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
-          contains(matrix.otp, '#{Versions.latest(:otp)}')\
-          """,
+          if: latest_version?(),
           run: mix(:format, check_formatted: true, env: :test)
         ]
     end
@@ -233,10 +233,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Lint code",
-          if: ~e"""
-          contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
-          contains(matrix.otp, '#{Versions.latest(:otp)}')\
-          """,
+          if: latest_version?(),
           run: mix(:credo, strict: true, env: :test)
         ]
     end
@@ -253,15 +250,32 @@ defmodule GitHubActions.Default do
     case Project.has_dep?(:excoveralls) do
       true ->
         [
-          name: "Run tests with coverage",
-          run: mix(:coveralls, Config.get([:steps, :coveralls]), env: :test)
+          name: "Run tests",
+          run: mix(:test, env: :test),
+          if: not_latest_version?()
         ]
 
       false ->
         [
           name: "Run tests",
-          run: mix(:test)
+          run: mix(:test, env: :test)
         ]
+    end
+  end
+
+  defp run_coverage(:windows), do: :skip
+
+  defp run_coverage(_nix) do
+    case Project.has_dep?(:excoveralls) do
+      true ->
+        [
+          name: "Run tests with coverage",
+          run: mix(:coveralls, Config.get([:steps, :coveralls]), env: :test),
+          if: latest_version?()
+        ]
+
+      false ->
+        :skip
     end
   end
 
@@ -284,6 +298,20 @@ defmodule GitHubActions.Default do
     otp = ~e[matrix.otp]
     lock = ~e[hashFiles(format('{0}{1}', github.workspace, '/mix.lock'))]
     "#{key}-#{os}-#{elixir}-#{otp}-#{lock}"
+  end
+
+  defp latest_version? do
+    ~e"""
+    contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
+    contains(matrix.otp, '#{Versions.latest(:otp)}')\
+    """
+  end
+
+  defp not_latest_version? do
+    ~e"""
+    !(contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
+    contains(matrix.otp, '#{Versions.latest(:otp)}'))\
+    """
   end
 
   defp member?(key, value), do: key |> Config.get() |> Enum.member?(value)
