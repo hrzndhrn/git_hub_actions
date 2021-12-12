@@ -361,7 +361,7 @@ defmodule GitHubActions.VersionsTest do
                ],
                [
                  otp: %Version{major: 21, minor: 3},
-                 elixir: %Version{major: 1, minor: 13, patch: 0},
+                 elixir: %Version{major: 1, minor: 13, patch: 0}
                ],
                [
                  otp: %Version{major: 24, minor: 1},
