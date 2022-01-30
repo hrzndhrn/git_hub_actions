@@ -1,3 +1,5 @@
+# credo:disable-for-this-file
+# Reactivate when credo version > 1.6.2 is released.
 defmodule GitHubActions.SigilsTest do
   use ExUnit.Case
 
