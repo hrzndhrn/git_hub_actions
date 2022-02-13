@@ -60,10 +60,10 @@ defmodule GitHubActions.Versions do
       ** (ArgumentError) latest/1 expected a list or table of versions or a key, got: [a: "1"]
 
       iex> Versions.latest(:elixir)
-      #Version<1.13.2>
+      #Version<1.13.3>
 
       iex> Versions.latest(:otp)
-      #Version<24.1>
+      #Version<24.2>
   """
   @spec latest(versions() | key()) :: Version.t()
   def latest(versions_or_key) when is_list(versions_or_key) do
@@ -147,14 +147,14 @@ defmodule GitHubActions.Versions do
       iex> minor_versions = Versions.latest_minor(:elixir)
       iex> Enum.map(minor_versions, &to_string/1)
       ["1.0.5", "1.1.1", "1.2.6", "1.3.4", "1.4.5", "1.5.3", "1.6.6", "1.7.4",
-       "1.8.2", "1.9.4", "1.10.4", "1.11.4", "1.12.3", "1.13.2"]
+       "1.8.2", "1.9.4", "1.10.4", "1.11.4", "1.12.3", "1.13.3"]
 
       iex> minor_versions = Versions.latest_minor(:otp)
       iex> Enum.map(minor_versions, &to_string/1)
       ["17.0", "17.1", "17.2", "17.3", "17.4", "17.5", "18.0", "18.1", "18.2",
        "18.3", "19.0", "19.1", "19.2", "19.3", "20.0", "20.1", "20.2", "20.3",
        "21.0", "21.1", "21.2", "21.3", "22.0", "22.1", "22.2", "22.3", "23.0",
-       "23.1", "23.2", "23.3", "24.0", "24.1"]
+       "23.1", "23.2", "23.3", "24.0", "24.1", "24.2"]
   """
   @spec latest_minor(versions_list() | key()) :: [Version.t()]
   def latest_minor(versions_or_key) when is_list(versions_or_key) do
@@ -238,11 +238,11 @@ defmodule GitHubActions.Versions do
 
       iex> major_versions = Versions.latest_major(:elixir)
       iex> Enum.map(major_versions, &to_string/1)
-      ["1.13.2"]
+      ["1.13.3"]
 
       iex> major_versions = Versions.latest_major(:otp)
       iex> Enum.map(major_versions, &to_string/1)
-      ["17.5", "18.3", "19.3", "20.3", "21.3", "22.3", "23.3", "24.1"]
+      ["17.5", "18.3", "19.3", "20.3", "21.3", "22.3", "23.3", "24.2"]
   """
   @spec latest_major(versions_list() | key()) :: [Version.t()]
   def latest_major(versions_or_key) when is_list(versions_or_key) do
@@ -495,7 +495,7 @@ defmodule GitHubActions.Versions do
       12
 
       iex> :otp |> Versions.compatible(elixir: ["1.10.0/4", "1.11.0/4"]) |> Enum.count()
-      14
+      15
 
       iex> Versions.compatible([], :otp, elixir: "1.6.6")
       ** (ArgumentError) compatible/3 expected a table of versions as first argument, got: []
@@ -652,16 +652,16 @@ defmodule GitHubActions.Versions do
 
       iex> matrix = Versions.matrix(elixir: ">= 1.9.0", otp: ">= 22.0.0")
       iex> Enum.map(matrix[:elixir], &to_string/1)
-      ["1.9.4", "1.10.4", "1.11.4", "1.12.3", "1.13.2"]
+      ["1.9.4", "1.10.4", "1.11.4", "1.12.3", "1.13.3"]
       iex> Enum.map(matrix[:otp], &to_string/1)
-      ["22.3", "23.3", "24.1"]
+      ["22.3", "23.3", "24.2"]
       iex> for [{k1, v1}, {k2, v2}] <- matrix[:exclude] do
       ...>   [{k1, to_string(v1)}, {k2, to_string(v2)}]
       ...> end
       [
         [elixir: "1.9.4", otp: "23.3"],
-        [elixir: "1.9.4", otp: "24.1"],
-        [elixir: "1.10.4", otp: "24.1"]
+        [elixir: "1.9.4", otp: "24.2"],
+        [elixir: "1.10.4", otp: "24.2"]
       ]
 
       iex> Versions.matrix([], elixir: ">= 1.9.0", otp: ">= 22.0.0")

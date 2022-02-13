@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["24.0/1"], elixir: ["1.11.4", "1.12.0/3", "1.13.0/2"]]
+             [otp: ["24.0/2"], elixir: ["1.11.4", "1.12.0/3", "1.13.0/3"]]
   end
 
   describe "get/2" do
@@ -102,10 +102,11 @@ defmodule GitHubActions.VersionsTest do
                "1.12.1",
                "1.12.2",
                "1.12.3",
-               # v1.13.0/1
+               # v1.13.0/3
                "1.13.0",
                "1.13.1",
-               "1.13.2"
+               "1.13.2",
+               "1.13.3"
              ]
     end
 
@@ -142,7 +143,8 @@ defmodule GitHubActions.VersionsTest do
                "23.2",
                "23.3",
                "24.0",
-               "24.1"
+               "24.1",
+               "24.2"
              ]
     end
   end
@@ -220,7 +222,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 12, patch: 3},
                %Version{major: 1, minor: 13, patch: 0},
                %Version{major: 1, minor: 13, patch: 1},
-               %Version{major: 1, minor: 13, patch: 2}
+               %Version{major: 1, minor: 13, patch: 2},
+               %Version{major: 1, minor: 13, patch: 3}
              ]
     end
 
@@ -253,7 +256,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 10, patch: 4},
                %Version{major: 1, minor: 11, patch: 4},
                %Version{major: 1, minor: 12, patch: 3},
-               %Version{major: 1, minor: 13, patch: 2}
+               %Version{major: 1, minor: 13, patch: 3}
              ]
     end
   end
@@ -268,7 +271,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 21, minor: 3},
                %Version{major: 22, minor: 3},
                %Version{major: 23, minor: 3},
-               %Version{major: 24, minor: 1}
+               %Version{major: 24, minor: 2}
              ]
     end
   end
@@ -296,7 +299,8 @@ defmodule GitHubActions.VersionsTest do
                otp ++
                  [
                    %Version{major: 24, minor: 0},
-                   %Version{major: 24, minor: 1}
+                   %Version{major: 24, minor: 1},
+                   %Version{major: 24, minor: 2}
                  ]
     end
 
@@ -315,7 +319,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 23, minor: 2},
                %Version{major: 23, minor: 3},
                %Version{major: 24, minor: 0},
-               %Version{major: 24, minor: 1}
+               %Version{major: 24, minor: 1},
+               %Version{major: 24, minor: 2}
              ]
     end
 
@@ -339,12 +344,12 @@ defmodule GitHubActions.VersionsTest do
   describe "compatible?/3" do
     batch "returns true for compatible version" do
       prove Versions.compatible?(@versions, elixir: "1.11.4", otp: "21.3") == true
-      prove Versions.compatible?(@versions, elixir: "1.12", otp: "24.1") == true
+      prove Versions.compatible?(@versions, elixir: "1.12", otp: "24.2") == true
     end
 
     batch "returns false for incompatible version" do
       prove Versions.compatible?(@versions, elixir: "1.11.4", otp: "19.0") == false
-      prove Versions.compatible?(@versions, elixir: "1.6", otp: "24.1") == false
+      prove Versions.compatible?(@versions, elixir: "1.6", otp: "24.2") == false
     end
   end
 
@@ -365,10 +370,10 @@ defmodule GitHubActions.VersionsTest do
                ],
                [
                  otp: %Version{major: 21, minor: 3},
-                 elixir: %Version{major: 1, minor: 13, patch: 2}
+                 elixir: %Version{major: 1, minor: 13, patch: 3}
                ],
                [
-                 otp: %Version{major: 24, minor: 1},
+                 otp: %Version{major: 24, minor: 2},
                  elixir: %Version{major: 1, minor: 10, patch: 4}
                ]
              ]
@@ -439,12 +444,12 @@ defmodule GitHubActions.VersionsTest do
                  [elixir_version: "#{elixir}", otp_version: "#{otp}"]
                end)
            ] == [
-             elixir_version: ["1.10.4", "1.11.4", "1.12.3", "1.13.2"],
-             otp_version: ["21.3", "22.3", "23.3", "24.1"],
+             elixir_version: ["1.10.4", "1.11.4", "1.12.3", "1.13.3"],
+             otp_version: ["21.3", "22.3", "23.3", "24.2"],
              exclude: [
                [elixir_version: "1.12.3", otp_version: "21.3"],
-               [elixir_version: "1.13.2", otp_version: "21.3"],
-               [elixir_version: "1.10.4", otp_version: "24.1"]
+               [elixir_version: "1.13.3", otp_version: "21.3"],
+               [elixir_version: "1.10.4", otp_version: "24.2"]
              ]
            ]
   end

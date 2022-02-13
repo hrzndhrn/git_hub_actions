@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.1.4 2022/01/30
+## 0.1.6 2022/02/13
+
+- Add Elixir version `1.13.3` to config
+- Add Erlang version `24.2` to config
+
+## 0.1.5 2022/01/30
 
 - Add Elixir version `1.13.2` to config
 
