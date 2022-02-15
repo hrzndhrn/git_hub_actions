@@ -23,7 +23,7 @@ defmodule GitHubActions.Workflow do
 
   List entries with the value `:skip` are not taken over.
 
-  Key-value pairs with a value of `:skip` are alos not part of the resulting
+  Key-value pairs with a value of `:skip` are also not part of the resulting
   data structure.
 
   With :skip, you can handle optional parts in a workflow script.
@@ -140,7 +140,7 @@ defmodule GitHubActions.Workflow do
   end
 
   @doc """
-  Evaluates a workflow script and returns the worflow data structure.
+  Evaluates a workflow script and returns the workflow data structure.
   """
   @spec eval(Path.t()) :: {:ok, term()} | :error
   def eval(file) do

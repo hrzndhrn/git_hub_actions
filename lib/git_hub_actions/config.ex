@@ -35,7 +35,7 @@ defmodule GitHubActions.Config do
   end
 
   @doc """
-  Returns the configuaration.
+  Returns the configuration.
   """
   @spec config :: config()
   def config, do: Process.get(@config_key) || []

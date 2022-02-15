@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Gha do
   Creates a GitHub actions file.
 
   See [Usage](/git_hub_actions/usage.html) and
-  [Defaults](/git_hub_actions/defaults.html) for more informations.
+  [Defaults](/git_hub_actions/defaults.html) for more information.
 
   ## Command line options
   - `--config`, `-c` - specifies the config file

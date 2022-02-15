@@ -15,7 +15,7 @@ defmodule GitHubActions.ConfigTest do
   describe "read/1" do
     test "raises error" do
       assert_raise File.Error, fn ->
-        Config.read("config/not/exisits.exs")
+        Config.read("config/not/exists.exs")
       end
     end
 

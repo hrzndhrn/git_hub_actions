@@ -22,7 +22,7 @@ defmodule GitHubActions.Mix do
   @doc ~S|
   Generates a mix task with a sub task or options.
 
-  The options will be converted to comman line options.
+  The options will be converted to command line options.
 
   The "special" options `:env` and `:os` are used to set `MIX_ENV`.
 
