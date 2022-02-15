@@ -701,7 +701,7 @@ defmodule GitHubActions.Versions do
       ["2.0.0", "2.0.1", "2.0.2"]
 
       iex> Versions.expand([:a])
-      ** (ArgumentError) expand/1 expected a list of versions, or tabel of versions got: [:a]
+      ** (ArgumentError) expand/1 expected a list of versions, or table of versions got: [:a]
   """
   @spec expand(versions()) :: versions()
   def expand(versions) do
@@ -712,7 +712,7 @@ defmodule GitHubActions.Versions do
       :error ->
         raise ArgumentError,
           message: """
-          expand/1 expected a list of versions, or tabel of versions \
+          expand/1 expected a list of versions, or table of versions \
           got: #{inspect(versions)}\
           """
     end

@@ -332,7 +332,7 @@ defmodule GitHubActions.VersionsTest do
       end
     end
 
-    test "raises error for invalid versoin" do
+    test "raises error for invalid version" do
       message = "compatible/3 expected a list of versions for :elixir, got: [:a]"
 
       assert_raise ArgumentError, message, fn ->
