@@ -63,7 +63,7 @@ defmodule GitHubActions.Versions do
       #Version<1.13.3>
 
       iex> Versions.latest(:otp)
-      #Version<24.2>
+      #Version<24.3>
   """
   @spec latest(versions() | key()) :: Version.t()
   def latest(versions_or_key) when is_list(versions_or_key) do
@@ -154,7 +154,7 @@ defmodule GitHubActions.Versions do
       ["17.0", "17.1", "17.2", "17.3", "17.4", "17.5", "18.0", "18.1", "18.2",
        "18.3", "19.0", "19.1", "19.2", "19.3", "20.0", "20.1", "20.2", "20.3",
        "21.0", "21.1", "21.2", "21.3", "22.0", "22.1", "22.2", "22.3", "23.0",
-       "23.1", "23.2", "23.3", "24.0", "24.1", "24.2"]
+       "23.1", "23.2", "23.3", "24.0", "24.1", "24.2", "24.3"]
   """
   @spec latest_minor(versions_list() | key()) :: [Version.t()]
   def latest_minor(versions_or_key) when is_list(versions_or_key) do
@@ -242,7 +242,7 @@ defmodule GitHubActions.Versions do
 
       iex> major_versions = Versions.latest_major(:otp)
       iex> Enum.map(major_versions, &to_string/1)
-      ["17.5", "18.3", "19.3", "20.3", "21.3", "22.3", "23.3", "24.2"]
+      ["17.5", "18.3", "19.3", "20.3", "21.3", "22.3", "23.3", "24.3"]
   """
   @spec latest_major(versions_list() | key()) :: [Version.t()]
   def latest_major(versions_or_key) when is_list(versions_or_key) do
@@ -495,7 +495,7 @@ defmodule GitHubActions.Versions do
       12
 
       iex> :otp |> Versions.compatible(elixir: ["1.10.0/4", "1.11.0/4"]) |> Enum.count()
-      15
+      16
 
       iex> Versions.compatible([], :otp, elixir: "1.6.6")
       ** (ArgumentError) compatible/3 expected a table of versions as first argument, got: []
@@ -654,14 +654,14 @@ defmodule GitHubActions.Versions do
       iex> Enum.map(matrix[:elixir], &to_string/1)
       ["1.9.4", "1.10.4", "1.11.4", "1.12.3", "1.13.3"]
       iex> Enum.map(matrix[:otp], &to_string/1)
-      ["22.3", "23.3", "24.2"]
+      ["22.3", "23.3", "24.3"]
       iex> for [{k1, v1}, {k2, v2}] <- matrix[:exclude] do
       ...>   [{k1, to_string(v1)}, {k2, to_string(v2)}]
       ...> end
       [
         [elixir: "1.9.4", otp: "23.3"],
-        [elixir: "1.9.4", otp: "24.2"],
-        [elixir: "1.10.4", otp: "24.2"]
+        [elixir: "1.9.4", otp: "24.3"],
+        [elixir: "1.10.4", otp: "24.3"]
       ]
 
       iex> Versions.matrix([], elixir: ">= 1.9.0", otp: ">= 22.0.0")
@@ -722,7 +722,6 @@ defmodule GitHubActions.Versions do
     @moduledoc false
 
     def type(versions) when is_list(versions) do
-      # Impl.expand(versions)
       case {table?(versions), list?(versions)} do
         {true, false} ->
           {:table, expand(versions) |> uniq() |> sort_table()}
@@ -878,13 +877,10 @@ defmodule GitHubActions.Versions do
         |> filter(Keyword.fetch!(opts, :otp))
         |> latest_major()
 
-      exclude = incompatible(versions, {:elixir, elixir}, {:otp, otp})
-
-      [
-        elixir: elixir,
-        otp: otp,
-        exclude: exclude
-      ]
+      case incompatible(versions, {:elixir, elixir}, {:otp, otp}) do
+        [] -> [elixir: elixir, otp: otp]
+        exclude -> [elixir: elixir, otp: otp, exclude: exclude]
+      end
     end
   end
 end

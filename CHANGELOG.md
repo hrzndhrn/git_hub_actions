@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.7 2022/04/03
+
+- Add Erlang version `24.3` to config
+- Fix exclude key bug
+
 ## 0.1.6 2022/02/13
 
 - Add Elixir version `1.13.3` to config

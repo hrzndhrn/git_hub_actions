@@ -46,9 +46,9 @@ defmodule GitHubActions.WorkflowTest do
                    strategy: [
                      matrix: [
                        elixir: ["1.10.4", "1.11.4", "1.12.3", "1.13.3"],
-                       otp: ["21.3", "22.3", "23.3", "24.2"],
+                       otp: ["21.3", "22.3", "23.3", "24.3"],
                        exclude: [
-                         [elixir: "1.10.4", otp: "24.2"],
+                         [elixir: "1.10.4", otp: "24.3"],
                          [elixir: "1.12.3", otp: "21.3"],
                          [elixir: "1.13.3", otp: "21.3"]
                        ]
@@ -97,7 +97,7 @@ defmodule GitHubActions.WorkflowTest do
                    strategy: [
                      matrix: [
                        elixir: ["1.11.4", "1.12.3", "1.13.3"],
-                       otp: ["21.3", "22.3", "23.3", "24.2"],
+                       otp: ["21.3", "22.3", "23.3", "24.3"],
                        exclude: [
                          [elixir: "1.12.3", otp: "21.3"],
                          [elixir: "1.13.3", otp: "21.3"]
@@ -174,26 +174,26 @@ defmodule GitHubActions.WorkflowTest do
                      [
                        name: "Check code format",
                        if:
-                         "${{ contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.2') }}",
+                         "${{ contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.3') }}",
                        run: "MIX_ENV=test mix format --check-formatted"
                      ],
                      [
                        name: "Lint code",
                        if:
-                         "${{ contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.2') }}",
+                         "${{ contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.3') }}",
                        run: "MIX_ENV=test mix credo --strict"
                      ],
                      [
                        {:name, "Run tests"},
                        {:run, "MIX_ENV=test mix test"},
                        {:if,
-                        "${{ !(contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.2')) }}"}
+                        "${{ !(contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.3')) }}"}
                      ],
                      [
                        name: "Run tests with coverage",
                        run: "MIX_ENV=test mix coveralls.github",
                        if:
-                         "${{ contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.2') }}"
+                         "${{ contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.3') }}"
                      ],
                      [
                        name: "Static code analysis",
