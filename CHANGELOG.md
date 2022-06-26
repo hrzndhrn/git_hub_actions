@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.8 2022/06/26
+
+- Add Elixir version `1.13.4` to config
+- Update to `actions/checkout@v3`
+
 ## 0.1.7 2022/04/03
 
 - Add Erlang version `24.3` to config

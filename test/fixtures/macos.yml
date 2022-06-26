@@ -10,7 +10,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Elixir
         run: brew install elixir
       - name: Install hex
@@ -35,7 +35,7 @@ jobs:
         run: MIX_ENV=test mix compile --warnings-as-errors
       - name: Run tests
         run: MIX_ENV=test mix test
-        if: ${{ !(contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.3')) }}
+        if: ${{ !(contains(matrix.elixir, '1.13.4') && contains(matrix.otp, '24.3')) }}
       - name: Run tests with coverage
         run: MIX_ENV=test mix coveralls.github
-        if: ${{ contains(matrix.elixir, '1.13.3') && contains(matrix.otp, '24.3') }}
+        if: ${{ contains(matrix.elixir, '1.13.4') && contains(matrix.otp, '24.3') }}

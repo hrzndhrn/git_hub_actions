@@ -242,7 +242,7 @@ defmodule GitHubActions.Default do
   defp checkout do
     [
       name: "Checkout",
-      uses: "actions/checkout@v2"
+      uses: "actions/checkout@v3"
     ]
   end
 
