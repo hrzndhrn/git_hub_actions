@@ -168,25 +168,28 @@ defmodule GitHubActions.Default do
             :skip
 
           {:ok, {_, file}} ->
-            file |> Path.dirname() |> restore()
+            file |> Path.dirname() |> restore(if: latest_version?())
         end
     end
   end
 
-  defp restore(path) do
+  defp restore(path, opts \\ []) do
     case Config.fetch!([:steps, :refresh]) do
       false ->
         :skip
 
       true ->
-        [
-          name: "Restore #{path}",
-          uses: "actions/cache@v2",
-          with: [
-            path: "#{path}",
-            key: key(path)
-          ]
-        ]
+        Keyword.merge(
+          [
+            name: "Restore #{path}",
+            uses: "actions/cache@v2",
+            with: [
+              path: "#{path}",
+              key: key(path)
+            ]
+          ],
+          opts
+        )
     end
   end
 
@@ -287,7 +290,8 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Static code analysis",
-          run: mix(:dialyzer)
+          run: mix(:dialyzer),
+          if: latest_version?()
         ]
     end
   end

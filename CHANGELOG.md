@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.10 2022/07/04
+
+- Run `dialyzer` only for latest erlang and Elixir version
+
 ## 0.1.9 2022/07/04
 
 - Add Erlang version `25.0` to config

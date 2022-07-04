@@ -162,7 +162,9 @@ defmodule GitHubActions.WorkflowTest do
                          ${{ matrix.otp }}-\
                          ${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}\
                          """
-                       ]
+                       ],
+                       if:
+                         "${{ contains(matrix.elixir, '1.13.4') && contains(matrix.otp, '25.0') }}"
                      ],
                      [
                        name: "Get dependencies",
@@ -202,7 +204,9 @@ defmodule GitHubActions.WorkflowTest do
                      ],
                      [
                        name: "Static code analysis",
-                       run: "mix dialyzer"
+                       run: "mix dialyzer",
+                       if:
+                         "${{ contains(matrix.elixir, '1.13.4') && contains(matrix.otp, '25.0') }}"
                      ]
                    ]
                  ]
