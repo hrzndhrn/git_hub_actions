@@ -13,7 +13,7 @@ defmodule GitHubActions.MixProject do
       source_url: @github,
       docs: docs(),
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
+      deps: deps() ++ recode(),
       aliases: aliases(),
       dialyzer: dialyzer(),
       test_coverage: [tool: ExCoveralls],
@@ -79,5 +79,12 @@ defmodule GitHubActions.MixProject do
       {:prove, "~> 0.1", only: [:dev, :test]},
       {:yamerl, "~> 0.8", only: [:dev, :test]}
     ]
+  end
+
+  defp recode() do
+    case Version.match?(System.version(), "~> 1.12") do
+      true -> [{:recode, "~> 0.1", only: [:dev, :test]}]
+      false -> []
+    end
   end
 end

@@ -66,6 +66,7 @@ defmodule GitHubActions.Mix do
       iex> mix(:deps, :compile, warnings_as_errors: true)
       "mix deps.compile --warnings-as-errors"
   """
+  @spec mix(atom(), atom(), keyword()) :: String.t()
   def mix(task, sub_task, opts)
       when is_atom(task) and is_atom(sub_task) and is_list(opts) do
     {os, opts} = Keyword.pop(opts, :os)

@@ -601,6 +601,7 @@ defmodule GitHubActions.Versions do
         [elixir: "1.12.3", otp: "21.3"]
       ]
   """
+  @spec incompatible(keyword()) :: [keyword()]
   def incompatible(versions \\ from_config(), [{key1, versions1}, {key2, versions2}])
       when is_atom(key1) and is_atom(key2) do
     versions =
@@ -672,6 +673,7 @@ defmodule GitHubActions.Versions do
       ** (ArgumentError) matrix/1 expected a table of versions as first argument, got: []
 
   """
+  @spec matrix(keyword(), keyword()) :: keyword()
   def matrix(versions \\ from_config(), opts) do
     case Impl.type(versions) do
       {:table, versions} ->
@@ -813,7 +815,8 @@ defmodule GitHubActions.Versions do
     def latest_major(versions, key), do: versions |> get(key) |> do_latest(:major)
 
     defp do_latest(versions, precision) do
-      Enum.reduce(versions, [], fn
+      versions
+      |> Enum.reduce([], fn
         version, [] ->
           [Version.parse!(version)]
 
