@@ -155,6 +155,7 @@ defmodule GitHubActions.Version do
     Requirement.match?(requirement, to_matchable(version))
   end
 
+  @spec compare(version(), version(), :minor | :patch) :: :gt | :lt | :eq
   def compare(a, b, precision \\ :patch) do
     do_compare(to_matchable(a), to_matchable(b), precision)
   end
@@ -255,6 +256,7 @@ defmodule GitHubActions.Version do
       iex> Version.to_requirement("1.1.1", "~>")
       "~> 1.1.1"
   """
+  @spec to_requirement(version(), String.t()) :: String.t()
   def to_requirement(version, operator)
       when is_binary(version) and operator in @requirement_operators do
     version |> parse!() |> to_requirement(operator)

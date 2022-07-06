@@ -52,7 +52,7 @@ defmodule GitHubActions.Yaml do
   end
 
   defp do_encode([item | data], lines, depth) do
-    {items, [last]} = do_encode(item, [], 0) |> Enum.split(-1)
+    {items, [last]} = item |> do_encode([], 0) |> Enum.split(-1)
     items = indent(items, depth + 1) ++ [indent_item(last, depth)]
     do_encode(data, items ++ lines, depth)
   end

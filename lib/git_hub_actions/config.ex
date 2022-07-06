@@ -118,19 +118,20 @@ defmodule GitHubActions.Config do
       iex> Config.fetch!([:linux, :foo])
       ** (KeyError) key :foo not found in: [name: \"Ubuntu\", runs_on: \"ubuntu-latest\"]
   """
+  @spec fetch!(key() | keys()) :: value()
   def fetch!(keys), do: Access.fetch!(config!(), keys)
 
   defp add([{key, value}] = data) when is_atom(key) and is_list(value) do
     case Keyword.keyword?(value) do
       true ->
-        merge(key, config(), value) |> put()
+        key |> merge(config(), value) |> put()
 
       false ->
         config() |> Keyword.merge(data) |> put()
     end
   end
 
-  defp add(data), do: config() |> Keyword.merge(data) |> put
+  defp add(data), do: config() |> Keyword.merge(data) |> put()
 
   defp merge(key, config, data) do
     new = config |> Keyword.get(key, []) |> Keyword.merge(data)

@@ -18,6 +18,7 @@ defmodule GitHubActions do
   @doc """
   Creates a GitHub actions workflow file.
   """
+  @spec run(keyword()) :: boolean()
   def run(opts) do
     read_config(opts)
 
