@@ -25,7 +25,17 @@ defmodule GitHubActionsCase do
         assert capture_io(fn -> unquote(module).run(opts) end) =~
                  ~r|creating.+test/tmp/#{file}|
 
-        assert file |> tmp() |> File.read!() == file |> fixture() |> File.read!()
+        result =
+          file
+          |> tmp()
+          |> File.read!()
+
+        expected = file |> fixture() |> File.read!()
+
+        if result != expected,
+          do: IO.puts("\nUnexpected result. Should be:\nfile: #{file},\n#{result}\n")
+
+        assert result == expected
       end
     end
   end
