@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.10 2022/07/04
+## 0.2.0 2022/09/07
 
 - Add a step for `mix dep.unlock --check-unused`
 
