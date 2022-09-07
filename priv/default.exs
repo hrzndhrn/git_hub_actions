@@ -36,6 +36,7 @@ defmodule GitHubActions.Default do
         get_deps(),
         compile_deps(os),
         compile(os),
+        check_unused_deps(),
         check_code_format(),
         lint_code(),
         run_tests(os),
@@ -212,6 +213,20 @@ defmodule GitHubActions.Default do
       name: "Compile project",
       run: mix(:compile, warnings_as_errors: true, env: :test, os: os)
     ]
+  end
+
+  defp check_unused_deps do
+    case Config.get(:check_unused_deps, true) do
+      false ->
+        :skip
+
+      true ->
+        [
+          name: "Check unused dependencies",
+          if: latest_version?(),
+          run: mix(:deps, :unlock, check_unused: true, env: :test)
+        ]
+    end
   end
 
   defp check_code_format do

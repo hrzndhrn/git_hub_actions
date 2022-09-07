@@ -183,6 +183,12 @@ defmodule GitHubActions.WorkflowTest do
                        run: "MIX_ENV=test mix compile --warnings-as-errors"
                      ],
                      [
+                       name: "Check unused dependencies",
+                       if:
+                         "${{ contains(matrix.elixir, '1.14.0') && contains(matrix.otp, '25.0') }}",
+                       run: "MIX_ENV=test mix deps.unlock --check-unused"
+                     ],
+                     [
                        name: "Check code format",
                        if:
                          "${{ contains(matrix.elixir, '1.14.0') && contains(matrix.otp, '25.0') }}",

@@ -2,6 +2,10 @@
 
 ## 0.1.10 2022/07/04
 
+- Add a step for `mix dep.unlock --check-unused`
+
+## 0.1.10 2022/07/04
+
 - Run `dialyzer` only for latest erlang and Elixir version
 
 ## 0.1.9 2022/07/04
