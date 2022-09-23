@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["25.0"], elixir: ["1.13.4", "1.14.0"]]
+             [otp: ["25.0/1"], elixir: ["1.13.4", "1.14.0"]]
   end
 
   describe "get/2" do
@@ -114,43 +114,45 @@ defmodule GitHubActions.VersionsTest do
     end
 
     test "get all otp versions" do
-      assert @versions |> Versions.get(:otp) |> Enum.map(&to_string/1) == [
-               "17.0",
-               "17.1",
-               "17.2",
-               "17.3",
-               "17.4",
-               "17.5",
-               "18.0",
-               "18.1",
-               "18.2",
-               "18.3",
-               "19.0",
-               "19.1",
-               "19.2",
-               "19.3",
-               "20.0",
-               "20.1",
-               "20.2",
-               "20.3",
-               "21.0",
-               "21.1",
-               "21.2",
-               "21.3",
-               "22.0",
-               "22.1",
-               "22.2",
-               "22.3",
-               "23.0",
-               "23.1",
-               "23.2",
-               "23.3",
-               "24.0",
-               "24.1",
-               "24.2",
-               "24.3",
-               "25.0"
-             ]
+      assert @versions |> Versions.get(:otp) |> Enum.map(&to_string/1) ==
+               [
+                 "17.0",
+                 "17.1",
+                 "17.2",
+                 "17.3",
+                 "17.4",
+                 "17.5",
+                 "18.0",
+                 "18.1",
+                 "18.2",
+                 "18.3",
+                 "19.0",
+                 "19.1",
+                 "19.2",
+                 "19.3",
+                 "20.0",
+                 "20.1",
+                 "20.2",
+                 "20.3",
+                 "21.0",
+                 "21.1",
+                 "21.2",
+                 "21.3",
+                 "22.0",
+                 "22.1",
+                 "22.2",
+                 "22.3",
+                 "23.0",
+                 "23.1",
+                 "23.2",
+                 "23.3",
+                 "24.0",
+                 "24.1",
+                 "24.2",
+                 "24.3",
+                 "25.0",
+                 "25.1"
+               ]
     end
   end
 
@@ -280,7 +282,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 22, minor: 3},
                %Version{major: 23, minor: 3},
                %Version{major: 24, minor: 3},
-               %Version{major: 25, minor: 0}
+               %Version{major: 25, minor: 1}
              ]
     end
   end
@@ -392,11 +394,11 @@ defmodule GitHubActions.VersionsTest do
                  elixir: %Version{major: 1, minor: 14, patch: 0}
                ],
                [
-                 otp: %Version{major: 25, minor: 0},
+                 otp: %Version{major: 25, minor: 1},
                  elixir: %Version{major: 1, minor: 11, patch: 4}
                ],
                [
-                 otp: %Version{major: 25, minor: 0},
+                 otp: %Version{major: 25, minor: 1},
                  elixir: %Version{major: 1, minor: 12, patch: 3}
                ]
              ]

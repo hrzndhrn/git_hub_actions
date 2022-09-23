@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 2022/09/23
+
+- Add Erlang version `25.1` to config
+
 ## 0.2.0 2022/09/07
 
 - Add a step for `mix dep.unlock --check-unused`
