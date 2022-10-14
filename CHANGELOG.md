@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2 2022/10/14
+
+- Add Elixir version `1.14.1` to config
+- Update to `actions/cache@v3`
+
 ## 0.2.1 2022/09/23
 
 - Add Erlang version `25.1` to config
