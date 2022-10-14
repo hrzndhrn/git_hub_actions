@@ -13,7 +13,7 @@ defmodule GitHubActions.MixProject do
       source_url: @github,
       docs: docs(),
       start_permanent: Mix.env() == :prod,
-      deps: deps() ++ recode(),
+      deps: deps(),
       aliases: aliases(),
       dialyzer: dialyzer(),
       test_coverage: [tool: ExCoveralls],
@@ -74,11 +74,11 @@ defmodule GitHubActions.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.25", only: [:dev], runtime: false},
-      {:excoveralls, "~> 0.14", only: [:dev, :test]},
+      {:excoveralls, "~> 0.15", only: [:dev, :test]},
       {:mock, "~> 0.3", only: :test},
       {:prove, "~> 0.1", only: [:dev, :test]},
       {:yamerl, "~> 0.8", only: [:dev, :test]}
-    ]
+    ] ++ recode()
   end
 
   defp recode() do
