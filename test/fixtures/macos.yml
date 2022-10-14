@@ -18,12 +18,12 @@ jobs:
       - name: Install rebar
         run: mix local.rebar --force
       - name: Restore deps
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: deps
           key: deps-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
       - name: Restore _build
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: _build
           key: _build-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}

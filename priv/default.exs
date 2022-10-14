@@ -147,7 +147,7 @@ defmodule GitHubActions.Default do
   defp restore(:chocolatey) do
     [
       name: "Restore chocolatey",
-      uses: "actions/cache@v2",
+      uses: "actions/cache@v3",
       with: [
         path: ~S"C:\Users\runneradmin\AppData\Local\Temp\chocolatey",
         key: "#{~e[runner.os]}-chocolatey-#{~e[github.sha]}",
@@ -183,7 +183,7 @@ defmodule GitHubActions.Default do
         Keyword.merge(
           [
             name: "Restore #{path}",
-            uses: "actions/cache@v2",
+            uses: "actions/cache@v3",
             with: [
               path: "#{path}",
               key: key(path)

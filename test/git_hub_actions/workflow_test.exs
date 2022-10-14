@@ -128,7 +128,7 @@ defmodule GitHubActions.WorkflowTest do
                      ],
                      [
                        name: "Restore deps",
-                       uses: "actions/cache@v2",
+                       uses: "actions/cache@v3",
                        with: [
                          path: "deps",
                          key: """
@@ -142,7 +142,7 @@ defmodule GitHubActions.WorkflowTest do
                      ],
                      [
                        name: "Restore _build",
-                       uses: "actions/cache@v2",
+                       uses: "actions/cache@v3",
                        with: [
                          path: "_build",
                          key: """
@@ -156,7 +156,7 @@ defmodule GitHubActions.WorkflowTest do
                      ],
                      [
                        name: "Restore test/support/plts",
-                       uses: "actions/cache@v2",
+                       uses: "actions/cache@v3",
                        with: [
                          path: "test/support/plts",
                          key: """
