@@ -14,6 +14,7 @@ defmodule GitHubActions.Config do
     runs_on: "ubuntu-latest"
 
   config key: "value"
+  ```
   """
 
   alias GitHubActions.Access
