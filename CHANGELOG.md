@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2 2022/11/09
+
+- Use default `env` for the format check, unused check, credo, coverall and test
+
 ## 0.2.2 2022/10/14
 
 - Add Elixir version `1.14.1` to config
