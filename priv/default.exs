@@ -252,7 +252,7 @@ defmodule GitHubActions.Default do
         [
           name: "Lint code",
           if: latest_version?(),
-          run: mix(:credo, strict: true, env: :test)
+          run: mix(:credo, strict: true)
         ]
     end
   end
@@ -269,14 +269,14 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Run tests",
-          run: mix(:test, env: :test),
+          run: mix(:test),
           if: not_latest_version?()
         ]
 
       false ->
         [
           name: "Run tests",
-          run: mix(:test, env: :test)
+          run: mix(:test)
         ]
     end
   end
@@ -288,7 +288,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Run tests with coverage",
-          run: mix(:coveralls, Config.get([:steps, :coveralls]), env: :test),
+          run: mix(:coveralls, Config.get([:steps, :coveralls])),
           if: latest_version?()
         ]
 

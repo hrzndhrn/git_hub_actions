@@ -186,29 +186,29 @@ defmodule GitHubActions.WorkflowTest do
                        name: "Check unused dependencies",
                        if:
                          "${{ contains(matrix.elixir, '1.14.1') && contains(matrix.otp, '25.1') }}",
-                       run: "MIX_ENV=test mix deps.unlock --check-unused"
+                       run: "mix deps.unlock --check-unused"
                      ],
                      [
                        name: "Check code format",
                        if:
                          "${{ contains(matrix.elixir, '1.14.1') && contains(matrix.otp, '25.1') }}",
-                       run: "MIX_ENV=test mix format --check-formatted"
+                       run: "mix format --check-formatted"
                      ],
                      [
                        name: "Lint code",
                        if:
                          "${{ contains(matrix.elixir, '1.14.1') && contains(matrix.otp, '25.1') }}",
-                       run: "MIX_ENV=test mix credo --strict"
+                       run: "mix credo --strict"
                      ],
                      [
                        {:name, "Run tests"},
-                       {:run, "MIX_ENV=test mix test"},
+                       {:run, "mix test"},
                        {:if,
                         "${{ !(contains(matrix.elixir, '1.14.1') && contains(matrix.otp, '25.1')) }}"}
                      ],
                      [
                        name: "Run tests with coverage",
-                       run: "MIX_ENV=test mix coveralls.github",
+                       run: "mix coveralls.github",
                        if:
                          "${{ contains(matrix.elixir, '1.14.1') && contains(matrix.otp, '25.1') }}"
                      ],
