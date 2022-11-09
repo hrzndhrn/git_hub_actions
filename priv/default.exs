@@ -224,7 +224,7 @@ defmodule GitHubActions.Default do
         [
           name: "Check unused dependencies",
           if: latest_version?(),
-          run: mix(:deps, :unlock, check_unused: true, env: :test)
+          run: mix(:deps, :unlock, check_unused: true)
         ]
     end
   end
@@ -238,7 +238,7 @@ defmodule GitHubActions.Default do
         [
           name: "Check code format",
           if: latest_version?(),
-          run: mix(:format, check_formatted: true, env: :test)
+          run: mix(:format, check_formatted: true)
         ]
     end
   end
