@@ -77,7 +77,7 @@ defmodule GitHubActions.MixProject do
       {:excoveralls, "~> 0.15", only: [:dev, :test]},
       {:mock, "~> 0.3", only: :test},
       {:prove, "~> 0.1", only: [:dev, :test]},
-      {:recode, "~> 0.1", only: [:dev, :test]},
+      {:recode, "~> 0.1", only: :dev},
       {:yamerl, "~> 0.8", only: [:dev, :test]}
     ]
   end
