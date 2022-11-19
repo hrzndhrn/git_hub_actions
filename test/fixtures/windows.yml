@@ -11,21 +11,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Restore chocolatey
-        uses: actions/cache@v3
-        with:
-          path: C:\Users\runneradmin\AppData\Local\Temp\chocolatey
-          key: ${{ runner.os }}-chocolatey-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-chocolatey-
       - name: Setup Elixir
-        run: |
-          cinst elixir --no-progress
-          echo "C:\ProgramData\chocolatey\lib\Elixir\bin;C:\ProgramData\chocolatey\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: Install hex
-        run: mix local.hex --force
-      - name: Install rebar
-        run: mix local.rebar --force
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.14.2'
+          otp-version: '25.1'
       - name: Get dependencies
         run: mix deps.get
       - name: Compile dependencies

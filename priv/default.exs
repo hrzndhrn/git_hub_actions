@@ -52,10 +52,7 @@ defmodule GitHubActions.Default do
       runs_on: Config.get([os, :runs_on]),
       steps: [
         checkout(),
-        restore(:chocolatey),
         setup_elixir(os),
-        install_hex(),
-        install_rebar(),
         get_deps(),
         compile_deps(os),
         compile(os),
@@ -118,15 +115,13 @@ defmodule GitHubActions.Default do
   end
 
   defp setup_elixir(:windows) do
-    echo = ~S(echo "C:\ProgramData\chocolatey\lib\Elixir\bin;C:\ProgramData\chocolatey\bin")
-    path = ~S(Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append)
-
     [
       name: "Setup Elixir",
-      run: """
-      cinst elixir --no-progress
-      #{echo} | #{path}
-      """
+      uses: "erlef/setup-beam@v1",
+      with: [
+        elixir_version: Versions.latest(:elixir),
+        otp_version: Versions.latest(:otp)
+      ]
     ]
   end
 
@@ -141,20 +136,6 @@ defmodule GitHubActions.Default do
     [
       name: "Install rebar",
       run: mix(:local, :rebar, force: true)
-    ]
-  end
-
-  defp restore(:chocolatey) do
-    [
-      name: "Restore chocolatey",
-      uses: "actions/cache@v3",
-      with: [
-        path: ~S"C:\Users\runneradmin\AppData\Local\Temp\chocolatey",
-        key: "#{~e[runner.os]}-chocolatey-#{~e[github.sha]}",
-        restore_keys: """
-        #{~e[runner.os]}-chocolatey-
-        """
-      ]
     ]
   end
 
