@@ -28,7 +28,7 @@ defmodule GitHubActions.WorkflowTest do
                    (Elixir ${{ matrix.elixir }}, \
                    OTP ${{ matrix.otp }})\
                    """,
-                   "runs-on": "ubuntu-latest"
+                   "runs-on": "ubuntu-20.04"
                  ]
                ]
              ]}
@@ -42,7 +42,7 @@ defmodule GitHubActions.WorkflowTest do
                jobs: [
                  linux: [
                    name: "Test on Ubuntu (Elixir ${{ matrix.elixir }}, OTP ${{ matrix.otp }})",
-                   "runs-on": "ubuntu-latest",
+                   "runs-on": "ubuntu-20.04",
                    strategy: [
                      matrix: [
                        elixir: ["1.10.4", "1.11.4", "1.12.3", "1.13.4", "1.14.2"],
@@ -76,7 +76,7 @@ defmodule GitHubActions.WorkflowTest do
                    Elixir ${{ matrix.elixir }}, \
                    OTP ${{ matrix.otp }})\
                    """,
-                   "runs-on": "ubuntu-latest",
+                   "runs-on": "ubuntu-20.04",
                    steps: [
                      [name: "Checkout", uses: "actions/checkout@v3"]
                    ]
@@ -98,7 +98,7 @@ defmodule GitHubActions.WorkflowTest do
                    Elixir ${{ matrix.elixir }}, \
                    OTP ${{ matrix.otp }})\
                    """,
-                   "runs-on": "ubuntu-latest",
+                   "runs-on": "ubuntu-20.04",
                    strategy: [
                      matrix: [
                        elixir: ["1.11.4", "1.12.3", "1.13.4", "1.14.2"],

@@ -1,11 +1,15 @@
 # Changelog
 
-## 0.2.3 2022/11/19
+## 0.2.5 2022/12/10
+
+- Set `runs-on: ubuntu-20.04` for linux as default.
+
+## 0.2.4 2022/11/19
 
 - Update the job for windows
 - Add Elixir version `1.14.2` to config
 
-## 0.2.2 2022/11/09
+## 0.2.3 2022/11/09
 
 - Use default `env` for the format check, unused check, credo, coverall and test
 

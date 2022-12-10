@@ -1,6 +1,6 @@
 # Defaults
 
-The defaults create a workflow file that runs on `ubuntu-latest`. The matrix is
+The defaults create a workflow file that runs on `ubuntu-20.04`. The matrix is
 created with the setting of `elixir` from the relevant project and the `OTP`
 versions >= 20.
 
@@ -54,7 +54,7 @@ config :jobs, [:linux]
 # Specifies the linux distribution.
 config :linux,
   name: "Ubuntu",
-  runs_on: "ubuntu-latest"
+  runs_on: "ubuntu-20.04"
 
 # Specifies the macos version.
 config :macos,
