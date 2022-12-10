@@ -24,7 +24,7 @@ config :jobs, [:linux]
 # Specifies the linux distribution.
 config :linux,
   name: "Ubuntu",
-  runs_on: "ubuntu-latest"
+  runs_on: "ubuntu-20.04"
 
 # Specifies the macos version.
 config :macos,
