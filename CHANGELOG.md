@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.6 2022/12/18
+
+- Add Erlang version `25.2` to config
+
 ## 0.2.5 2022/12/10
 
 - Set `runs-on: ubuntu-20.04` for linux as default.
