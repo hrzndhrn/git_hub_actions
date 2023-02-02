@@ -22,7 +22,7 @@ Or, as a dependency.
 ``` elixir
 def deps do
   [
-    {:git_hub_actions, "~> 0.1", only: :dev}
+    {:git_hub_actions, "~> 0.2", only: :dev}
   ]
 end
 ```
