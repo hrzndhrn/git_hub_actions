@@ -46,14 +46,18 @@ defmodule GitHubActions.WorkflowTest do
                    strategy: [
                      matrix: [
                        elixir: ["1.10.4", "1.11.4", "1.12.3", "1.13.4", "1.14.4"],
-                       otp: ["21.3", "22.3", "23.3", "24.3", "25.3"],
+                       otp: ["21.3", "22.3", "23.3", "24.3", "25.3", "26.0"],
                        exclude: [
                          [elixir: "1.10.4", otp: "24.3"],
                          [elixir: "1.10.4", otp: "25.3"],
+                         [elixir: "1.10.4", otp: "26.0"],
                          [elixir: "1.11.4", otp: "25.3"],
+                         [elixir: "1.11.4", otp: "26.0"],
                          [elixir: "1.12.3", otp: "21.3"],
                          [elixir: "1.12.3", otp: "25.3"],
+                         [elixir: "1.12.3", otp: "26.0"],
                          [elixir: "1.13.4", otp: "21.3"],
+                         [elixir: "1.13.4", otp: "26.0"],
                          [elixir: "1.14.4", otp: "21.3"],
                          [elixir: "1.14.4", otp: "22.3"]
                        ]
@@ -102,12 +106,15 @@ defmodule GitHubActions.WorkflowTest do
                    strategy: [
                      matrix: [
                        elixir: ["1.11.4", "1.12.3", "1.13.4", "1.14.4"],
-                       otp: ["21.3", "22.3", "23.3", "24.3", "25.3"],
+                       otp: ["21.3", "22.3", "23.3", "24.3", "25.3", "26.0"],
                        exclude: [
                          [elixir: "1.11.4", otp: "25.3"],
+                         [elixir: "1.11.4", otp: "26.0"],
                          [elixir: "1.12.3", otp: "21.3"],
                          [elixir: "1.12.3", otp: "25.3"],
+                         [elixir: "1.12.3", otp: "26.0"],
                          [elixir: "1.13.4", otp: "21.3"],
+                         [elixir: "1.13.4", otp: "26.0"],
                          [elixir: "1.14.4", otp: "21.3"],
                          [elixir: "1.14.4", otp: "22.3"]
                        ]
@@ -168,7 +175,7 @@ defmodule GitHubActions.WorkflowTest do
                          """
                        ],
                        if:
-                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '25.3') }}"
+                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '26.0') }}"
                      ],
                      [
                        name: "Get dependencies",
@@ -185,38 +192,38 @@ defmodule GitHubActions.WorkflowTest do
                      [
                        name: "Check unused dependencies",
                        if:
-                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '25.3') }}",
+                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '26.0') }}",
                        run: "mix deps.unlock --check-unused"
                      ],
                      [
                        name: "Check code format",
                        if:
-                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '25.3') }}",
+                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '26.0') }}",
                        run: "mix format --check-formatted"
                      ],
                      [
                        name: "Lint code",
                        if:
-                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '25.3') }}",
+                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '26.0') }}",
                        run: "mix credo --strict"
                      ],
                      [
                        {:name, "Run tests"},
                        {:run, "mix test"},
                        {:if,
-                        "${{ !(contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '25.3')) }}"}
+                        "${{ !(contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '26.0')) }}"}
                      ],
                      [
                        name: "Run tests with coverage",
                        run: "mix coveralls.github",
                        if:
-                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '25.3') }}"
+                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '26.0') }}"
                      ],
                      [
                        name: "Static code analysis",
                        run: "mix dialyzer",
                        if:
-                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '25.3') }}"
+                         "${{ contains(matrix.elixir, '1.14.4') && contains(matrix.otp, '26.0') }}"
                      ]
                    ]
                  ]
