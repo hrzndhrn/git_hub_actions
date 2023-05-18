@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.9 dev
+## 0.2.9 2023/05/18
 
 - Add Erlang version `26.0` to config
 
