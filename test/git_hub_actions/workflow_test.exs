@@ -63,7 +63,7 @@ defmodule GitHubActions.WorkflowTest do
                          [elixir: "1.14.5", otp: "26.0"],
                          [elixir: "1.15.0", otp: "21.3"],
                          [elixir: "1.15.0", otp: "22.3"],
-                         [elixir: "1.15.0", otp: "23.3"],
+                         [elixir: "1.15.0", otp: "23.3"]
                        ]
                      ]
                    ]
