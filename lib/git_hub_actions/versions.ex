@@ -674,7 +674,6 @@ defmodule GitHubActions.Versions do
         [elixir: "1.12.3", otp: "26.1"],
         [elixir: "1.13.4", otp: "26.1"],
         [elixir: "1.14.5", otp: "22.3"],
-        [elixir: "1.14.5", otp: "26.1"],
         [elixir: "1.15.7", otp: "22.3"],
         [elixir: "1.15.7", otp: "23.3"]
       ]

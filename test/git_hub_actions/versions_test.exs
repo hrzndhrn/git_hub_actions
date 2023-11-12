@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["26.0/1"], elixir: ["1.15.0/7"]]
+             [otp: ["26.0/1"], elixir: ["1.14.5", "1.15.0/7"]]
   end
 
   describe "get/2" do
@@ -457,10 +457,6 @@ defmodule GitHubActions.VersionsTest do
                [
                  otp: %Version{major: 26, minor: 1},
                  elixir: %Version{major: 1, minor: 13, patch: 4}
-               ],
-               [
-                 otp: %Version{major: 26, minor: 1},
-                 elixir: %Version{major: 1, minor: 14, patch: 5}
                ]
              ]
     end
