@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.18 2023/11/12
+
+- Update config: Elixir version `1.14.5` supports OTP `26.0`
+
 ## 0.2.17 2023/10/23
 
 - Add Elixir version `1.15.7` to config
