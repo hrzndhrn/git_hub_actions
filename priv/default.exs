@@ -286,7 +286,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Static code analysis",
-          run: mix(:dialyzer),
+          run: mix(:dialyzer, force_check: true, format: "github"),
           if: latest_version?()
         ]
     end

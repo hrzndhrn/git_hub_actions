@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.19 2023/12/23
+
+- Update config: Elixir version `1.16.0` supports OTP `26.2`
+- Add flads `--format github` and `--force-check` for `dialyzer` in default
+  config.
+
+
 ## 0.2.18 2023/11/12
 
 - Update config: Elixir version `1.14.5` supports OTP `26.0`

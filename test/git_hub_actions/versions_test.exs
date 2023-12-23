@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["26.0/1"], elixir: ["1.14.5", "1.15.0/7"]]
+             [otp: ["26.0/2"], elixir: ["1.14.5", "1.15.0/7", "1.16.0"]]
   end
 
   describe "get/2" do
@@ -115,7 +115,7 @@ defmodule GitHubActions.VersionsTest do
                "1.14.3",
                "1.14.4",
                "1.14.5",
-               # v1.15.0/6
+               # v1.15.0/7
                "1.15.0",
                "1.15.1",
                "1.15.2",
@@ -123,7 +123,9 @@ defmodule GitHubActions.VersionsTest do
                "1.15.4",
                "1.15.5",
                "1.15.6",
-               "1.15.7"
+               "1.15.7",
+               # v1.16.0
+               "1.16.0"
              ]
     end
 
@@ -169,7 +171,8 @@ defmodule GitHubActions.VersionsTest do
                  "25.2",
                  "25.3",
                  "26.0",
-                 "26.1"
+                 "26.1",
+                 "26.2"
                ]
     end
   end
@@ -263,7 +266,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 15, patch: 4},
                %Version{major: 1, minor: 15, patch: 5},
                %Version{major: 1, minor: 15, patch: 6},
-               %Version{major: 1, minor: 15, patch: 7}
+               %Version{major: 1, minor: 15, patch: 7},
+               %Version{major: 1, minor: 16, patch: 0}
              ]
     end
 
@@ -298,7 +302,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 12, patch: 3},
                %Version{major: 1, minor: 13, patch: 4},
                %Version{major: 1, minor: 14, patch: 5},
-               %Version{major: 1, minor: 15, patch: 7}
+               %Version{major: 1, minor: 15, patch: 7},
+               %Version{major: 1, minor: 16, patch: 0}
              ]
     end
   end
@@ -315,7 +320,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 23, minor: 3},
                %Version{major: 24, minor: 3},
                %Version{major: 25, minor: 3},
-               %Version{major: 26, minor: 1}
+               %Version{major: 26, minor: 2}
              ]
     end
   end
@@ -404,58 +409,42 @@ defmodule GitHubActions.VersionsTest do
       elixir =
         @versions
         |> Versions.get(:elixir)
-        |> Versions.filter("~> 1.11")
+        |> Versions.filter("~> 1.12")
         |> Versions.latest_minor()
 
       otp = @versions |> Versions.compatible(:otp, elixir: elixir) |> Versions.latest_major()
 
       assert Versions.incompatible(@versions, otp: otp, elixir: elixir) == [
                [
-                 otp: %Version{major: 21, minor: 3},
-                 elixir: %Version{major: 1, minor: 12, patch: 3}
-               ],
-               [
-                 otp: %Version{major: 21, minor: 3},
-                 elixir: %Version{major: 1, minor: 13, patch: 4}
-               ],
-               [
-                 otp: %Version{major: 21, minor: 3},
-                 elixir: %Version{major: 1, minor: 14, patch: 5}
-               ],
-               [
-                 otp: %Version{major: 21, minor: 3},
-                 elixir: %Version{major: 1, minor: 15, patch: 7}
-               ],
-               [
                  otp: %Version{major: 22, minor: 3},
                  elixir: %Version{major: 1, minor: 14, patch: 5}
                ],
                [
                  otp: %Version{major: 22, minor: 3},
                  elixir: %Version{major: 1, minor: 15, patch: 7}
+               ],
+               [
+                 otp: %Version{major: 22, minor: 3},
+                 elixir: %Version{major: 1, minor: 16, patch: 0}
                ],
                [
                  otp: %Version{major: 23, minor: 3},
                  elixir: %Version{major: 1, minor: 15, patch: 7}
                ],
                [
-                 otp: %Version{major: 25, minor: 3},
-                 elixir: %Version{major: 1, minor: 11, patch: 4}
+                 otp: %Version{major: 23, minor: 3},
+                 elixir: %Version{major: 1, minor: 16, patch: 0}
                ],
                [
                  otp: %Version{major: 25, minor: 3},
                  elixir: %Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %Version{major: 26, minor: 1},
-                 elixir: %Version{major: 1, minor: 11, patch: 4}
-               ],
-               [
-                 otp: %Version{major: 26, minor: 1},
+                 otp: %Version{major: 26, minor: 2},
                  elixir: %Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %Version{major: 26, minor: 1},
+                 otp: %Version{major: 26, minor: 2},
                  elixir: %Version{major: 1, minor: 13, patch: 4}
                ]
              ]
