@@ -7,7 +7,7 @@ defmodule GitHubActions.MixProject do
     [
       app: :git_hub_actions,
       version: "0.2.19",
-      elixir: "~> 1.11",
+      elixir: "~> 1.12",
       name: "GitHubActions",
       description: "A little tool to write GitHub actions in Elixir",
       source_url: @github,
