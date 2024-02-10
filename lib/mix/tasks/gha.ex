@@ -30,7 +30,7 @@ defmodule Mix.Tasks.Gha do
     |> Keyword.merge(opts)
     |> GitHubActions.run()
   rescue
-    error ->
+    error in OptionParser.ParseError ->
       Mix.Shell.IO.error(Exception.format(:error, error, []))
       exit({:shutdown, 1})
   end
