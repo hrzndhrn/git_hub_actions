@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["26.0/2"], elixir: ["1.14.5", "1.15.0/7", "1.16.0/1"]]
+             [otp: ["26.0/2"], elixir: ["1.14.5", "1.15.0/7", "1.16.0/2"]]
   end
 
   describe "get/2" do
@@ -126,7 +126,8 @@ defmodule GitHubActions.VersionsTest do
                "1.15.7",
                # v1.16.0/1
                "1.16.0",
-               "1.16.1"
+               "1.16.1",
+               "1.16.2"
              ]
     end
 
@@ -269,7 +270,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 15, patch: 6},
                %Version{major: 1, minor: 15, patch: 7},
                %Version{major: 1, minor: 16, patch: 0},
-               %Version{major: 1, minor: 16, patch: 1}
+               %Version{major: 1, minor: 16, patch: 1},
+               %Version{major: 1, minor: 16, patch: 2}
              ]
     end
 
@@ -305,7 +307,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 13, patch: 4},
                %Version{major: 1, minor: 14, patch: 5},
                %Version{major: 1, minor: 15, patch: 7},
-               %Version{major: 1, minor: 16, patch: 1}
+               %Version{major: 1, minor: 16, patch: 2}
              ]
     end
   end
@@ -427,7 +429,7 @@ defmodule GitHubActions.VersionsTest do
                ],
                [
                  otp: %Version{major: 22, minor: 3},
-                 elixir: %Version{major: 1, minor: 16, patch: 1}
+                 elixir: %Version{major: 1, minor: 16, patch: 2}
                ],
                [
                  otp: %Version{major: 23, minor: 3},
@@ -435,7 +437,7 @@ defmodule GitHubActions.VersionsTest do
                ],
                [
                  otp: %Version{major: 23, minor: 3},
-                 elixir: %Version{major: 1, minor: 16, patch: 1}
+                 elixir: %Version{major: 1, minor: 16, patch: 2}
                ],
                [
                  otp: %Version{major: 25, minor: 3},
