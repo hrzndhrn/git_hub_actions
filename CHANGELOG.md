@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.22 2024/03/14
+
+- Update to `actions/cache@v4`
+
 ## 0.2.21 2024/03/11
 
 - Add Elixir version `1.16.2` to config

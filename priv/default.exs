@@ -164,7 +164,7 @@ defmodule GitHubActions.Default do
         Keyword.merge(
           [
             name: "Restore #{path}",
-            uses: "actions/cache@v3",
+            uses: "actions/cache@v4",
             with: [
               path: "#{path}",
               key: key(path)
