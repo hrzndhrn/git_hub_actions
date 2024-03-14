@@ -96,7 +96,7 @@ defmodule GitHubActions.WorkflowTest do
                    """,
                    "runs-on": "ubuntu-20.04",
                    steps: [
-                     [name: "Checkout", uses: "actions/checkout@v3"]
+                     [name: "Checkout", uses: "actions/checkout@v4"]
                    ]
                  ]
                ]
@@ -143,7 +143,7 @@ defmodule GitHubActions.WorkflowTest do
                    steps: [
                      [
                        name: "Checkout",
-                       uses: "actions/checkout@v3"
+                       uses: "actions/checkout@v4"
                      ],
                      [
                        name: "Setup Elixir",

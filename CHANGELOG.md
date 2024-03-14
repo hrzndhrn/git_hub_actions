@@ -3,6 +3,7 @@
 ## 0.2.22 2024/03/14
 
 - Update to `actions/cache@v4`
+- Update to `actions/checkout@v4`
 
 ## 0.2.21 2024/03/11
 

@@ -92,7 +92,7 @@ defmodule GitHubActions.Workflow do
     defp checkout do
       [
         name: "Checkout",
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       ]
     end
 
