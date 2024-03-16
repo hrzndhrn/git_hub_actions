@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.22 2024/03/14
+## 0.2.22 2024/03/16
 
 - Update to `actions/cache@v4`
 - Update to `actions/checkout@v4`
