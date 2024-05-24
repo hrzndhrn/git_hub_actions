@@ -57,7 +57,7 @@ defmodule GitHubActions.ConfigTest do
 
   describe "config/1" do
     test "raises an error" do
-      message = "config/1 expected a keyword list, got: #{inspect('*')}"
+      message = "config/1 expected a keyword list, got: #{inspect(~c"*")}"
 
       assert_raise ArgumentError, message, fn -> Config.config([42]) end
     end
