@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.22 2024/06/23
+
+- Update inspect implementation for `GitHubActions.Version`
+- Require Elixir verions 1.13
+- Add Elixir version `1.17.1` to config
+- Add Erlang version `27.0` to config
+
 ## 0.2.22 2024/03/16
 
 - Update to `actions/cache@v4`
