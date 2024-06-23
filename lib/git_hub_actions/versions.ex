@@ -32,7 +32,7 @@ defmodule GitHubActions.Versions do
 
       iex> Config.config(:versions, ["1.0.0/2", "1.1.0/3"])
       iex> Versions.latest()
-      #Version<1.1.3>
+      %GitHubActions.Version{major: 1, minor: 1, patch: 3}
   """
   @spec latest :: Version.t()
   def latest, do: latest(from_config())
@@ -44,14 +44,14 @@ defmodule GitHubActions.Versions do
   ## Examples
 
       iex> Versions.latest(["1.0.0/2", "1.1.0/3"])
-      #Version<1.1.3>
+      %GitHubActions.Version{major: 1, minor: 1, patch: 3}
 
       iex> Config.config(:versions, [
       ...>   [a: ["1.0.0/2", "1.1.0/3"], b: ["2.0/5"]],
       ...>   [a: ["1.2.0/1", "1.3.0/4"], b: ["3.0/5"]]
       ...> ])
       iex> Versions.latest(:a)
-      #Version<1.3.4>
+      %GitHubActions.Version{major: 1, minor: 3, patch: 4}
 
       iex> Versions.latest(["foo"])
       ** (GitHubActions.InvalidVersionError) invalid version: "foo"
@@ -60,10 +60,10 @@ defmodule GitHubActions.Versions do
       ** (ArgumentError) latest/1 expected a list or table of versions or a key, got: [a: "1"]
 
       iex> Versions.latest(:elixir)
-      #Version<1.16.2>
+      %GitHubActions.Version{major: 1, minor: 17, patch: 1}
 
       iex> Versions.latest(:otp)
-      #Version<26.2>
+      %GitHubActions.Version{major: 27, minor: 0}
   """
   @spec latest(versions() | key()) :: Version.t()
   def latest(versions_or_key) when is_list(versions_or_key) do
@@ -91,7 +91,7 @@ defmodule GitHubActions.Versions do
       ...>   [a: ["1.0.0/2"], b: ["1.0.0/3"]],
       ...>   [a: ["1.1.0/3"], b: ["1.1.0/4"]]
       ...> ], :a)
-      #Version<1.1.3>
+      %GitHubActions.Version{major: 1, minor: 1, patch: 3}
 
       iex> Versions.latest([a: "1"], :a)
       ** (ArgumentError) latest/1 expected a table of versions,  got: [a: "1"]
@@ -148,7 +148,7 @@ defmodule GitHubActions.Versions do
       iex> Enum.map(minor_versions, &to_string/1)
       ["1.0.5", "1.1.1", "1.2.6", "1.3.4", "1.4.5", "1.5.3", "1.6.6", "1.7.4",
        "1.8.2", "1.9.4", "1.10.4", "1.11.4", "1.12.3", "1.13.4", "1.14.5",
-       "1.15.7", "1.16.2"]
+       "1.15.8", "1.16.3", "1.17.1"]
 
       iex> minor_versions = Versions.latest_minor(:otp)
       iex> Enum.map(minor_versions, &to_string/1)
@@ -156,7 +156,7 @@ defmodule GitHubActions.Versions do
        "18.3", "19.0", "19.1", "19.2", "19.3", "20.0", "20.1", "20.2", "20.3",
        "21.0", "21.1", "21.2", "21.3", "22.0", "22.1", "22.2", "22.3", "23.0",
        "23.1", "23.2", "23.3", "24.0", "24.1", "24.2", "24.3", "25.0", "25.1",
-       "25.2", "25.3", "26.0", "26.1", "26.2"]
+       "25.2", "25.3", "26.0", "26.1", "26.2", "27.0"]
   """
   @spec latest_minor(versions_list() | key()) :: [Version.t()]
   def latest_minor(versions_or_key) when is_list(versions_or_key) do
@@ -240,11 +240,11 @@ defmodule GitHubActions.Versions do
 
       iex> major_versions = Versions.latest_major(:elixir)
       iex> Enum.map(major_versions, &to_string/1)
-      ["1.16.2"]
+      ["1.17.1"]
 
       iex> major_versions = Versions.latest_major(:otp)
       iex> Enum.map(major_versions, &to_string/1)
-      ["17.5", "18.3", "19.3", "20.3", "21.3", "22.3", "23.3", "24.3", "25.3", "26.2"]
+      ["17.5", "18.3", "19.3", "20.3", "21.3", "22.3", "23.3", "24.3", "25.3", "26.2", "27.0"]
   """
   @spec latest_major(versions_list() | key()) :: [Version.t()]
   def latest_major(versions_or_key) when is_list(versions_or_key) do
@@ -304,7 +304,7 @@ defmodule GitHubActions.Versions do
       ...> ]
       iex> versions = Versions.get(versions, :b)
       iex> hd versions
-      #Version<1.0>
+      %GitHubActions.Version{major: 1, minor: 0}
       iex> Enum.map(versions, &to_string/1)
       ["1.0", "1.1", "1.2", "2.0"]
 
@@ -655,21 +655,29 @@ defmodule GitHubActions.Versions do
 
       iex> matrix = Versions.matrix(elixir: ">= 1.12.0", otp: ">= 22.0.0")
       iex> Enum.map(matrix[:elixir], &to_string/1)
-      ["1.12.3", "1.13.4", "1.14.5", "1.15.7", "1.16.2"]
+      ["1.12.3", "1.13.4", "1.14.5", "1.15.8", "1.16.3", "1.17.1"]
       iex> Enum.map(matrix[:otp], &to_string/1)
-      ["22.3", "23.3", "24.3", "25.3", "26.2"]
+      ["22.3", "23.3", "24.3", "25.3", "26.2", "27.0"]
       iex> for [{k1, v1}, {k2, v2}] <- matrix[:exclude] do
       ...>   [{k1, to_string(v1)}, {k2, to_string(v2)}]
       ...> end
       [
         [elixir: "1.12.3", otp: "25.3"],
         [elixir: "1.12.3", otp: "26.2"],
+        [elixir: "1.12.3", otp: "27.0"],
         [elixir: "1.13.4", otp: "26.2"],
+        [elixir: "1.13.4", otp: "27.0"],
         [elixir: "1.14.5", otp: "22.3"],
-        [elixir: "1.15.7", otp: "22.3"],
-        [elixir: "1.15.7", otp: "23.3"],
-        [elixir: "1.16.2", otp: "22.3"],
-        [elixir: "1.16.2", otp: "23.3"]
+        [elixir: "1.14.5", otp: "27.0"],
+        [elixir: "1.15.8", otp: "22.3"],
+        [elixir: "1.15.8", otp: "23.3"],
+        [elixir: "1.15.8", otp: "27.0"],
+        [elixir: "1.16.3", otp: "22.3"],
+        [elixir: "1.16.3", otp: "23.3"],
+        [elixir: "1.16.3", otp: "27.0"],
+        [elixir: "1.17.1", otp: "22.3"],
+        [elixir: "1.17.1", otp: "23.3"],
+        [elixir: "1.17.1", otp: "24.3"]
       ]
 
       iex> Versions.matrix([], elixir: ">= 1.9.0", otp: ">= 22.0.0")

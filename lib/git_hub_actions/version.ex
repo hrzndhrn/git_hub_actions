@@ -36,7 +36,7 @@ defmodule GitHubActions.Version do
     "!"
   ]
   @fields [:major, :minor, :patch]
-
+  @derive {Inspect, optional: [:minor, :patch]}
   defstruct @fields
 
   @type version :: String.t() | t
@@ -53,23 +53,23 @@ defmodule GitHubActions.Version do
 
       iex> {:ok, version} = Version.parse("1.2")
       iex> version
-      #Version<1.2>
+      %GitHubActions.Version{major: 1, minor: 2}
 
       iex> Version.parse("1-2")
       :error
 
       iex> {:ok, [v1, v2, v3]} = Version.parse("2.2/4")
       iex> v1
-      #Version<2.2>
+      %GitHubActions.Version{major: 2, minor: 2}
       iex> v2
-      #Version<2.3>
+      %GitHubActions.Version{major: 2, minor: 3}
       iex> v3
-      #Version<2.4>
+      %GitHubActions.Version{major: 2, minor: 4}
 
       iex> {:ok, version} = Version.parse("1.2")
       iex> {:ok, version} = Version.parse(version)
       iex> version
-      #Version<1.2>
+      %GitHubActions.Version{major: 1, minor: 2}
   """
   @spec parse(String.t() | t()) :: {:ok, t()} | :error
   def parse(string) when is_binary(string) do
@@ -94,13 +94,13 @@ defmodule GitHubActions.Version do
   ## Examples
 
       iex> Version.parse!("1")
-      #Version<1>
+      %GitHubActions.Version{major: 1}
 
       iex> Version.parse!("1.2")
-      #Version<1.2>
+      %GitHubActions.Version{major: 1, minor: 2}
 
       iex> Version.parse!("1.2.3")
-      #Version<1.2.3>
+      %GitHubActions.Version{major: 1, minor: 2, patch: 3}
 
       iex> Version.parse!("invalid")
       ** (GitHubActions.InvalidVersionError) invalid version: "invalid"
@@ -286,11 +286,11 @@ defimpl String.Chars, for: GitHubActions.Version do
   end
 end
 
-defimpl Inspect, for: GitHubActions.Version do
-  def inspect(self, _opts) do
-    "#Version<#{to_string(self)}>"
-  end
-end
+# defimpl Inspect, for: GitHubActions.Version do
+#   def inspect(self, _opts) do
+#     "#Version<#{to_string(self)}>"
+#   end
+# end
 
 defmodule GitHubActions.InvalidVersionError do
   defexception [:version]
