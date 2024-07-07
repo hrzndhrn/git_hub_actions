@@ -135,6 +135,7 @@ defmodule GitHubActions.Workflow do
 
       alias GitHubActions.Config
       alias GitHubActions.Project
+      alias GitHubActions.Version
       alias GitHubActions.Versions
     end
   end

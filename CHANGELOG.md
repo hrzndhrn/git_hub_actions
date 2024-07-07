@@ -3,6 +3,13 @@
 ## 0.2.24 2024/07/07
 
 - Add Elixir version `1.17.2` to config
+- Make `GitHubActions.Version` avaialable in workflow scripts
+- Add the functions `GitHubActions.Version.major/1`, 
+  `GitHubActions.Version.minor/1` and `GitHubActions.Version.patch/1`
+- Add the option `--elixir`/`-e` to `mix gha`. The given version will be 
+  available in the config.
+- Update the default workflow script. The script will now use an Elixir version, 
+  specified by `--elixir`, as the minimum version in the version matrix.
 
 ## 0.2.23 2024/06/23
 

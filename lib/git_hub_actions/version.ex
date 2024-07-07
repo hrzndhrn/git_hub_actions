@@ -116,6 +116,49 @@ defmodule GitHubActions.Version do
   def parse!(%__MODULE__{} = version), do: version
 
   @doc """
+  Returns the mayor version as string.
+
+  ## Examples
+
+      iex> "1.2.3" |> Version.parse!() |> Version.major()
+      "1"
+  """
+  @spec major(t) :: String.t()
+  def major(%GitHubActions.Version{major: major}), do: "#{major}"
+
+  @doc """
+  Returns the minor version as string.
+
+  ## Examples
+
+      iex> "1.2.3" |> Version.parse!() |> Version.minor()
+      "1.2"
+
+      iex> "1" |> Version.parse!() |> Version.minor()
+      "1.0"
+  """
+  @spec minor(t) :: String.t()
+  def minor(%GitHubActions.Version{major: major, minor: minor}) do
+    "#{major}.#{minor || 0}"
+  end
+
+  @doc """
+  Returns the patch version as string.
+
+  ## Examples
+
+      iex> "1.2.3" |> Version.parse!() |> Version.patch()
+      "1.2.3"
+
+      iex> "1" |> Version.parse!() |> Version.patch()
+      "1.0.0"
+  """
+  @spec minor(t) :: String.t()
+  def patch(%GitHubActions.Version{major: major, minor: minor, patch: patch}) do
+    "#{major}.#{minor || 0}.#{patch || 0}"
+  end
+
+  @doc """
   Checks if the given version matches the specification.
 
   Returns `true` if `version` satisfies `requirement`, `false` otherwise.
@@ -285,12 +328,6 @@ defimpl String.Chars, for: GitHubActions.Version do
     "#{version.major}#{Version.next(version.minor)}#{Version.next(version.patch)}"
   end
 end
-
-# defimpl Inspect, for: GitHubActions.Version do
-#   def inspect(self, _opts) do
-#     "#Version<#{to_string(self)}>"
-#   end
-# end
 
 defmodule GitHubActions.InvalidVersionError do
   defexception [:version]
