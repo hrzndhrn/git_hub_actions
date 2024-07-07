@@ -35,7 +35,7 @@ jobs:
         run: MIX_ENV=test mix compile --warnings-as-errors
       - name: Run tests
         run: mix test
-        if: ${{ !(contains(matrix.elixir, '1.17.1') && contains(matrix.otp, '27.0')) }}
+        if: ${{ !(contains(matrix.elixir, '1.17.2') && contains(matrix.otp, '27.0')) }}
       - name: Run tests with coverage
         run: mix coveralls.github
-        if: ${{ contains(matrix.elixir, '1.17.1') && contains(matrix.otp, '27.0') }}
+        if: ${{ contains(matrix.elixir, '1.17.2') && contains(matrix.otp, '27.0') }}

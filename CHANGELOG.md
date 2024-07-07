@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.2.22 2024/06/23
+## 0.2.24 2024/07/07
+
+- Add Elixir version `1.17.2` to config
+
+## 0.2.23 2024/06/23
 
 - Update inspect implementation for `GitHubActions.Version`
 - Require Elixir verions 1.13
