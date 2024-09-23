@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["27.0"], elixir: ["1.17.0/2"]]
+             [otp: ["27.0/1"], elixir: ["1.17.0/3"]]
   end
 
   describe "get/2" do
@@ -130,10 +130,11 @@ defmodule GitHubActions.VersionsTest do
                "1.16.1",
                "1.16.2",
                "1.16.3",
-               # v1.17.0/2
+               # v1.17.0/3
                "1.17.0",
                "1.17.1",
-               "1.17.2"
+               "1.17.2",
+               "1.17.3"
              ]
     end
 
@@ -181,7 +182,8 @@ defmodule GitHubActions.VersionsTest do
                  "26.0",
                  "26.1",
                  "26.2",
-                 "27.0"
+                 "27.0",
+                 "27.1"
                ]
     end
   end
@@ -283,7 +285,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 16, patch: 3},
                %Version{major: 1, minor: 17, patch: 0},
                %Version{major: 1, minor: 17, patch: 1},
-               %Version{major: 1, minor: 17, patch: 2}
+               %Version{major: 1, minor: 17, patch: 2},
+               %Version{major: 1, minor: 17, patch: 3}
              ]
     end
 
@@ -320,7 +323,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 14, patch: 5},
                %Version{major: 1, minor: 15, patch: 8},
                %Version{major: 1, minor: 16, patch: 3},
-               %Version{major: 1, minor: 17, patch: 2}
+               %Version{major: 1, minor: 17, patch: 3}
              ]
     end
   end
@@ -338,7 +341,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 24, minor: 3},
                %Version{major: 25, minor: 3},
                %Version{major: 26, minor: 2},
-               %Version{major: 27, minor: 0}
+               %Version{major: 27, minor: 1}
              ]
     end
   end
@@ -447,7 +450,7 @@ defmodule GitHubActions.VersionsTest do
                ],
                [
                  otp: %Version{major: 22, minor: 3},
-                 elixir: %Version{major: 1, minor: 17, patch: 2}
+                 elixir: %Version{major: 1, minor: 17, patch: 3}
                ],
                [
                  otp: %Version{major: 23, minor: 3},
@@ -459,11 +462,11 @@ defmodule GitHubActions.VersionsTest do
                ],
                [
                  otp: %Version{major: 23, minor: 3},
-                 elixir: %Version{major: 1, minor: 17, patch: 2}
+                 elixir: %Version{major: 1, minor: 17, patch: 3}
                ],
                [
                  otp: %Version{major: 24, minor: 3},
-                 elixir: %Version{major: 1, minor: 17, patch: 2}
+                 elixir: %Version{major: 1, minor: 17, patch: 3}
                ],
                [
                  otp: %Version{major: 25, minor: 3},
@@ -478,23 +481,23 @@ defmodule GitHubActions.VersionsTest do
                  elixir: %Version{major: 1, minor: 13, patch: 4}
                ],
                [
-                 otp: %Version{major: 27, minor: 0},
+                 otp: %Version{major: 27, minor: 1},
                  elixir: %Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %Version{major: 27, minor: 0},
+                 otp: %Version{major: 27, minor: 1},
                  elixir: %Version{major: 1, minor: 13, patch: 4}
                ],
                [
-                 otp: %Version{major: 27, minor: 0},
+                 otp: %Version{major: 27, minor: 1},
                  elixir: %Version{major: 1, minor: 14, patch: 5}
                ],
                [
-                 otp: %Version{major: 27, minor: 0},
+                 otp: %Version{major: 27, minor: 1},
                  elixir: %Version{major: 1, minor: 15, patch: 8}
                ],
                [
-                 otp: %Version{major: 27, minor: 0},
+                 otp: %Version{major: 27, minor: 1},
                  elixir: %Version{major: 1, minor: 16, patch: 3}
                ]
              ]
