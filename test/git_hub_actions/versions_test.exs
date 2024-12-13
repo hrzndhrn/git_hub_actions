@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["27.0/1"], elixir: ["1.17.0/3"]]
+             [otp: ["27.0/2"], elixir: ["1.17.0/3"]]
   end
 
   describe "get/2" do
@@ -183,7 +183,8 @@ defmodule GitHubActions.VersionsTest do
                  "26.1",
                  "26.2",
                  "27.0",
-                 "27.1"
+                 "27.1",
+                 "27.2"
                ]
     end
   end
@@ -341,7 +342,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 24, minor: 3},
                %Version{major: 25, minor: 3},
                %Version{major: 26, minor: 2},
-               %Version{major: 27, minor: 1}
+               %Version{major: 27, minor: 2}
              ]
     end
   end
@@ -481,23 +482,23 @@ defmodule GitHubActions.VersionsTest do
                  elixir: %Version{major: 1, minor: 13, patch: 4}
                ],
                [
-                 otp: %Version{major: 27, minor: 1},
+                 otp: %Version{major: 27, minor: 2},
                  elixir: %Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %Version{major: 27, minor: 1},
+                 otp: %Version{major: 27, minor: 2},
                  elixir: %Version{major: 1, minor: 13, patch: 4}
                ],
                [
-                 otp: %Version{major: 27, minor: 1},
+                 otp: %Version{major: 27, minor: 2},
                  elixir: %Version{major: 1, minor: 14, patch: 5}
                ],
                [
-                 otp: %Version{major: 27, minor: 1},
+                 otp: %Version{major: 27, minor: 2},
                  elixir: %Version{major: 1, minor: 15, patch: 8}
                ],
                [
-                 otp: %Version{major: 27, minor: 1},
+                 otp: %Version{major: 27, minor: 2},
                  elixir: %Version{major: 1, minor: 16, patch: 3}
                ]
              ]

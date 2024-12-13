@@ -56,7 +56,7 @@ defmodule GitHubActions.Config do
   """
   @spec config(config()) :: config() | nil
   def config(data) when is_list(data) do
-    unless Keyword.keyword?(data) do
+    if !Keyword.keyword?(data) do
       raise ArgumentError, "config/1 expected a keyword list, got: #{inspect(data)}"
     end
 
