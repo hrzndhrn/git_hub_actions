@@ -21,12 +21,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          key: deps-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}
       - name: Restore _build
         uses: actions/cache@v4
         with:
           path: _build
-          key: _build-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          key: _build-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}
       - name: Get dependencies
         run: mix deps.get
       - name: Compile dependencies

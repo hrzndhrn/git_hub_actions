@@ -153,7 +153,7 @@ defmodule GitHubActions.Default do
             :skip
 
           {:ok, {_, file}} ->
-            file |> Path.dirname() |> restore(if: latest_version?())
+            file |> Path.dirname() |> restore(if: latest_version(true))
         end
     end
   end
@@ -169,7 +169,7 @@ defmodule GitHubActions.Default do
             name: "Restore #{path}",
             uses: "actions/cache@v4",
             with: [
-              path: "#{path}",
+              path: path,
               key: key(path)
             ]
           ],
@@ -207,7 +207,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Check unused dependencies",
-          if: latest_version?(),
+          if: latest_version(true),
           run: mix(:deps, :unlock, check_unused: true)
         ]
     end
@@ -221,7 +221,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Check code format",
-          if: latest_version?(),
+          if: latest_version(true),
           run: mix(:format, check_formatted: true)
         ]
     end
@@ -235,7 +235,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Lint code",
-          if: latest_version?(),
+          if: latest_version(true),
           run: mix(:credo, strict: true)
         ]
     end
@@ -254,7 +254,7 @@ defmodule GitHubActions.Default do
         [
           name: "Run tests",
           run: mix(:test),
-          if: not_latest_version?()
+          if: latest_version(false)
         ]
 
       false ->
@@ -273,7 +273,7 @@ defmodule GitHubActions.Default do
         [
           name: "Run tests with coverage",
           run: mix(:coveralls, Config.get([:steps, :coveralls])),
-          if: latest_version?()
+          if: latest_version(true)
         ]
 
       false ->
@@ -290,7 +290,7 @@ defmodule GitHubActions.Default do
         [
           name: "Static code analysis",
           run: mix(:dialyzer, force_check: true, format: "github"),
-          if: latest_version?()
+          if: latest_version(true)
         ]
     end
   end
@@ -299,18 +299,19 @@ defmodule GitHubActions.Default do
     os = ~e[runner.os]
     elixir = ~e[matrix.elixir]
     otp = ~e[matrix.otp]
+    setup_beam_version = ~e{steps.setup-beam.outputs.setup-beam-version}
     lock = ~e[hashFiles(format('{0}{1}', github.workspace, '/mix.lock'))]
-    "#{key}-#{os}-#{elixir}-#{otp}-#{lock}"
+    "#{key}-#{os}-#{elixir}-#{otp}-#{lock}-#{setup_beam_version}"
   end
 
-  defp latest_version? do
+  defp latest_version(true) do
     ~e"""
     contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
     contains(matrix.otp, '#{Versions.latest(:otp)}')\
     """
   end
 
-  defp not_latest_version? do
+  defp latest_version(false) do
     ~e"""
     !(contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
     contains(matrix.otp, '#{Versions.latest(:otp)}'))\
