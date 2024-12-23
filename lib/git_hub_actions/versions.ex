@@ -60,7 +60,7 @@ defmodule GitHubActions.Versions do
       ** (ArgumentError) latest/1 expected a list or table of versions or a key, got: [a: "1"]
 
       iex> Versions.latest(:elixir)
-      %GitHubActions.Version{major: 1, minor: 17, patch: 3}
+      %GitHubActions.Version{major: 1, minor: 18, patch: 0}
 
       iex> Versions.latest(:otp)
       %GitHubActions.Version{major: 27, minor: 2}
@@ -148,7 +148,7 @@ defmodule GitHubActions.Versions do
       iex> Enum.map(minor_versions, &to_string/1)
       ["1.0.5", "1.1.1", "1.2.6", "1.3.4", "1.4.5", "1.5.3", "1.6.6", "1.7.4",
        "1.8.2", "1.9.4", "1.10.4", "1.11.4", "1.12.3", "1.13.4", "1.14.5",
-       "1.15.8", "1.16.3", "1.17.3"]
+       "1.15.8", "1.16.3", "1.17.3", "1.18.0"]
 
       iex> minor_versions = Versions.latest_minor(:otp)
       iex> Enum.map(minor_versions, &to_string/1)
@@ -240,7 +240,7 @@ defmodule GitHubActions.Versions do
 
       iex> major_versions = Versions.latest_major(:elixir)
       iex> Enum.map(major_versions, &to_string/1)
-      ["1.17.3"]
+      ["1.18.0"]
 
       iex> major_versions = Versions.latest_major(:otp)
       iex> Enum.map(major_versions, &to_string/1)
@@ -655,7 +655,7 @@ defmodule GitHubActions.Versions do
 
       iex> matrix = Versions.matrix(elixir: ">= 1.12.0", otp: ">= 22.0.0")
       iex> Enum.map(matrix[:elixir], &to_string/1)
-      ["1.12.3", "1.13.4", "1.14.5", "1.15.8", "1.16.3", "1.17.3"]
+      ["1.12.3", "1.13.4", "1.14.5", "1.15.8", "1.16.3", "1.17.3", "1.18.0"]
       iex> Enum.map(matrix[:otp], &to_string/1)
       ["22.3", "23.3", "24.3", "25.3", "26.2", "27.2"]
       iex> for [{k1, v1}, {k2, v2}] <- matrix[:exclude] do
@@ -677,7 +677,10 @@ defmodule GitHubActions.Versions do
         [elixir: "1.16.3", otp: "27.2"],
         [elixir: "1.17.3", otp: "22.3"],
         [elixir: "1.17.3", otp: "23.3"],
-        [elixir: "1.17.3", otp: "24.3"]
+        [elixir: "1.17.3", otp: "24.3"],
+        [elixir: "1.18.0", otp: "22.3"],
+        [elixir: "1.18.0", otp: "23.3"],
+        [elixir: "1.18.0", otp: "24.3"]
       ]
 
       iex> Versions.matrix([], elixir: ">= 1.9.0", otp: ">= 22.0.0")
