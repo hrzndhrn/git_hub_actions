@@ -26,7 +26,7 @@ defmodule GitHubActions.Default do
   defp matrix do
     [elixir: elixir_version(), otp: @otp_version]
     |> Versions.matrix()
-    |> Keyword.take([:elixir, :otp, :exclude])
+    |> Keyword.take([:include])
   end
 
   defp job(:linux = os) do
