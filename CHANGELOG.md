@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.2.28 dev
+## 0.3.0 dev
 
 - Add setup-beam-version to cache keys.
+- Update docs.
+- Reduce jobs in the default workflow script.
 
 ## 0.2.27 2024/12/23
 

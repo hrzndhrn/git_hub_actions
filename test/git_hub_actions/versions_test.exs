@@ -368,9 +368,9 @@ defmodule GitHubActions.VersionsTest do
         %Version{major: 23, minor: 3}
       ]
 
-      assert Versions.compatible(@versions, :otp, elixir: "1.11") == otp
+      assert Versions.compatible_to(@versions, :otp, elixir: "1.11") == otp
 
-      assert Versions.compatible(@versions, :otp, elixir: "1.11.4") ==
+      assert Versions.compatible_to(@versions, :otp, elixir: "1.11.4") ==
                otp ++
                  [
                    %Version{major: 24, minor: 0},
@@ -381,7 +381,7 @@ defmodule GitHubActions.VersionsTest do
     end
 
     test "otp versions for multiple elixir versions" do
-      assert Versions.compatible(@versions, :otp, elixir: "1.11.0/4") == [
+      assert Versions.compatible_to(@versions, :otp, elixir: "1.11.0/4") == [
                %Version{major: 21, minor: 0},
                %Version{major: 21, minor: 1},
                %Version{major: 21, minor: 2},
@@ -402,18 +402,18 @@ defmodule GitHubActions.VersionsTest do
     end
 
     test "raises error for invalid versions" do
-      message = "compatible/3 expected a table of versions as first argument, got: [:a]"
+      message = "compatible_to/3 expected a table of versions as first argument, got: [:a]"
 
       assert_raise ArgumentError, message, fn ->
-        Versions.compatible([:a], :a, b: "1")
+        Versions.compatible_to([:a], :a, b: "1")
       end
     end
 
     test "raises error for invalid version" do
-      message = "compatible/3 expected a list of versions for :elixir, got: [:a]"
+      message = "compatible_to/3 expected a list of versions for :elixir, got: [:a]"
 
       assert_raise ArgumentError, message, fn ->
-        Versions.compatible(@versions, :otp, elixir: [:a])
+        Versions.compatible_to(@versions, :otp, elixir: [:a])
       end
     end
   end
@@ -438,7 +438,7 @@ defmodule GitHubActions.VersionsTest do
         |> Versions.filter("~> 1.12")
         |> Versions.latest_minor()
 
-      otp = @versions |> Versions.compatible(:otp, elixir: elixir) |> Versions.latest_major()
+      otp = @versions |> Versions.compatible_to(:otp, elixir: elixir) |> Versions.latest_major()
 
       assert Versions.incompatible(@versions, otp: otp, elixir: elixir) == [
                [
@@ -581,6 +581,18 @@ defmodule GitHubActions.VersionsTest do
                exclude: [
                  [elixir: Version.parse!("1.12.3"), otp: Version.parse!("21.3")],
                  [elixir: Version.parse!("1.13.2"), otp: Version.parse!("21.3")]
+               ],
+               include: [
+                 [elixir: Version.parse!("1.10.4"), otp: Version.parse!("21.3")],
+                 [elixir: Version.parse!("1.10.4"), otp: Version.parse!("22.3")],
+                 [elixir: Version.parse!("1.10.4"), otp: Version.parse!("23.3")],
+                 [elixir: Version.parse!("1.11.4"), otp: Version.parse!("21.3")],
+                 [elixir: Version.parse!("1.11.4"), otp: Version.parse!("22.3")],
+                 [elixir: Version.parse!("1.11.4"), otp: Version.parse!("23.3")],
+                 [elixir: Version.parse!("1.12.3"), otp: Version.parse!("22.3")],
+                 [elixir: Version.parse!("1.12.3"), otp: Version.parse!("23.3")],
+                 [elixir: Version.parse!("1.13.2"), otp: Version.parse!("22.3")],
+                 [elixir: Version.parse!("1.13.2"), otp: Version.parse!("23.3")]
                ]
              ]
     end
@@ -588,7 +600,10 @@ defmodule GitHubActions.VersionsTest do
     test "create matrix for elixir requirement '== 1.13.3'" do
       assert Versions.matrix(elixir: "== 1.13.3", otp: "== 23.0.0") == [
                elixir: [Version.parse!("1.13.3")],
-               otp: [Version.parse!("23.0")]
+               otp: [Version.parse!("23.0")],
+               include: [
+                 [elixir: Version.parse!("1.13.3"), otp: Version.parse!("23.0")]
+               ]
              ]
     end
   end

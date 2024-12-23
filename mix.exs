@@ -1,16 +1,17 @@
 defmodule GitHubActions.MixProject do
   use Mix.Project
 
-  @github "https://github.com/hrzndhrn/git_hub_actions"
+  @source_url "https://github.com/hrzndhrn/git_hub_actions"
+  @version "0.3.0"
 
   def project do
     [
       app: :git_hub_actions,
-      version: "0.2.27",
+      version: @version,
       elixir: "~> 1.13",
       name: "GitHubActions",
       description: "A little tool to write GitHub actions in Elixir",
-      source_url: @github,
+      source_url: @source_url,
       docs: docs(),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -25,10 +26,9 @@ defmodule GitHubActions.MixProject do
   def docs() do
     [
       main: "usage",
-      extras: [
-        "docs/usage.md",
-        "docs/defaults.md"
-      ]
+      formatters: ["html"],
+      source_ref: "v#{@version}",
+      extras: ["docs/usage.md"]
     ]
   end
 
@@ -42,7 +42,7 @@ defmodule GitHubActions.MixProject do
     [
       maintainers: ["Marcus Kruse"],
       licenses: ["MIT"],
-      links: %{"GitHub" => @github}
+      links: %{"GitHub" => @source_url}
     ]
   end
 
