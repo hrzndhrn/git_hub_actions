@@ -173,7 +173,7 @@ defmodule GitHubActions.WorkflowTest do
                         with: [
                           path: "deps",
                           key:
-                            "deps-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}"
+                            "deps-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}"
                         ]
                       ],
                       [
@@ -182,7 +182,7 @@ defmodule GitHubActions.WorkflowTest do
                         with: [
                           path: "_build",
                           key:
-                            "_build-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}"
+                            "_build-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}"
                         ]
                       ],
                       [
@@ -191,7 +191,7 @@ defmodule GitHubActions.WorkflowTest do
                         with: [
                           path: "test/support/plts",
                           key:
-                            "test/support/plts-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}"
+                            "test/support/plts-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}"
                         ],
                         if:
                           "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}"
