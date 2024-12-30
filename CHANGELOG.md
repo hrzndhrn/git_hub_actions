@@ -6,6 +6,7 @@
 - Add `GitHubActions.Versions.minimize/1`
 - Reduce jobs in the default workflow script.
 - Update docs.
+- Add Elixir version `1.18.1` to config
 
 ## 0.2.27 2024/12/23
 
