@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 dev
+## 0.3.0 2024/12/30
 
 - Add setup-beam-version to cache keys.
 - Add `GitHubActions.Versions.minimize/1`
