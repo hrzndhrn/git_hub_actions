@@ -60,7 +60,7 @@ defmodule GitHubActions.Versions do
       ** (ArgumentError) latest/1 expected a list or table of versions or a key, got: [a: "1"]
 
       iex> Versions.latest(:elixir)
-      %GitHubActions.Version{major: 1, minor: 18, patch: 0}
+      %GitHubActions.Version{major: 1, minor: 18, patch: 1}
 
       iex> Versions.latest(:otp)
       %GitHubActions.Version{major: 27, minor: 2}
@@ -148,7 +148,7 @@ defmodule GitHubActions.Versions do
       iex> Enum.map(minor_versions, &to_string/1)
       ["1.0.5", "1.1.1", "1.2.6", "1.3.4", "1.4.5", "1.5.3", "1.6.6", "1.7.4",
        "1.8.2", "1.9.4", "1.10.4", "1.11.4", "1.12.3", "1.13.4", "1.14.5",
-       "1.15.8", "1.16.3", "1.17.3", "1.18.0"]
+       "1.15.8", "1.16.3", "1.17.3", "1.18.1"]
 
       iex> minor_versions = Versions.latest_minor(:otp)
       iex> Enum.map(minor_versions, &to_string/1)
@@ -240,7 +240,7 @@ defmodule GitHubActions.Versions do
 
       iex> major_versions = Versions.latest_major(:elixir)
       iex> Enum.map(major_versions, &to_string/1)
-      ["1.18.0"]
+      ["1.18.1"]
 
       iex> major_versions = Versions.latest_major(:otp)
       iex> Enum.map(major_versions, &to_string/1)
@@ -474,36 +474,36 @@ defmodule GitHubActions.Versions do
   end
 
   @doc """
-  Returns the versions of `key` that are compatible with `to`.
+  Returns the versions of `key` that are compatible_to with `to`.
 
   ## Examples
 
-      iex> otp = Versions.compatible(:otp, elixir: "1.6.6")
+      iex> otp = Versions.compatible_to(:otp, elixir: "1.6.6")
       iex> Enum.map(otp, &to_string/1)
       ["19.0", "19.1", "19.2", "19.3", "20.0", "20.1", "20.2", "20.3", "21.0",
        "21.1", "21.2", "21.3"]
 
-      iex> elixir = Versions.compatible(:elixir, otp: "20.3")
+      iex> elixir = Versions.compatible_to(:elixir, otp: "20.3")
       iex> Enum.map(elixir, &to_string/1)
       ["1.4.5", "1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.6.0", "1.6.1", "1.6.2",
        "1.6.3", "1.6.4", "1.6.5", "1.6.6", "1.7.0", "1.7.1", "1.7.2", "1.7.3",
        "1.7.4", "1.8.0", "1.8.1", "1.8.2", "1.9.0", "1.9.1", "1.9.2", "1.9.3",
        "1.9.4"]
 
-      iex> :otp |> Versions.compatible(elixir: "1.10.0") |> Enum.count()
+      iex> :otp |> Versions.compatible_to(elixir: "1.10.0") |> Enum.count()
       8
 
-      iex> :otp |> Versions.compatible(elixir: "1.10.0/4") |> Enum.count()
+      iex> :otp |> Versions.compatible_to(elixir: "1.10.0/4") |> Enum.count()
       12
 
-      iex> :otp |> Versions.compatible(elixir: ["1.10.0/4", "1.11.0/4"]) |> Enum.count()
+      iex> :otp |> Versions.compatible_to(elixir: ["1.10.0/4", "1.11.0/4"]) |> Enum.count()
       16
 
-      iex> Versions.compatible([], :otp, elixir: "1.6.6")
-      ** (ArgumentError) compatible/3 expected a table of versions as first argument, got: []
+      iex> Versions.compatible_to([], :otp, elixir: "1.6.6")
+      ** (ArgumentError) compatible_to/3 expected a table of versions as first argument, got: []
   """
-  @spec compatible(versions(), key(), [{key(), Version.version()}]) :: [Version.t()]
-  def compatible(versions \\ from_config(), key, [{to_key, to_versions}])
+  @spec compatible_to(versions(), key(), [{key(), Version.version()}]) :: [Version.t()]
+  def compatible_to(versions \\ from_config(), key, [{to_key, to_versions}])
       when is_atom(key) and is_atom(to_key) do
     versions =
       case Impl.type(versions) do
@@ -513,7 +513,7 @@ defmodule GitHubActions.Versions do
         _error ->
           raise ArgumentError,
             message: """
-            compatible/3 expected a table of versions as first argument, \
+            compatible_to/3 expected a table of versions as first argument, \
             got: #{inspect(versions)}\
             """
       end
@@ -526,12 +526,12 @@ defmodule GitHubActions.Versions do
         _error ->
           raise ArgumentError,
             message: """
-            compatible/3 expected a list of versions for #{inspect(to_key)}, \
+            compatible_to/3 expected a list of versions for #{inspect(to_key)}, \
             got: #{inspect(to_versions)}\
             """
       end
 
-    Impl.compatible(versions, key, {to_key, to_versions})
+    Impl.compatible_to(versions, key, {to_key, to_versions})
   end
 
   @doc """
@@ -582,6 +582,78 @@ defmodule GitHubActions.Versions do
     version2 = Version.parse!(version2)
 
     Impl.compatible?(versions, {key1, version1}, {key2, version2})
+  end
+
+  @doc """
+  Returns the compatible versions between `versions1` and `versions2`.
+
+  ## Examples
+
+      iex> versions = Versions.compatible(
+      ...>   elixir: ["1.9.4", "1.10.4", "1.11.4", "1.12.3"],
+      ...>   otp: ["21.3", "22.3", "23.3", "24.0"]
+      ...> )
+      iex> for [{k1, v1}, {k2, v2}] <- versions do
+      ...>   [{k1, to_string(v1)}, {k2, to_string(v2)}]
+      ...> end
+      [
+        [elixir: "1.9.4", otp: "21.3"],
+        [elixir: "1.9.4", otp: "22.3"],
+        [elixir: "1.10.4", otp: "21.3"],
+        [elixir: "1.10.4", otp: "22.3"],
+        [elixir: "1.10.4", otp: "23.3"],
+        [elixir: "1.11.4", otp: "21.3"],
+        [elixir: "1.11.4", otp: "22.3"],
+        [elixir: "1.11.4", otp: "23.3"],
+        [elixir: "1.11.4", otp: "24.0"],
+        [elixir: "1.12.3", otp: "22.3"],
+        [elixir: "1.12.3", otp: "23.3"],
+        [elixir: "1.12.3", otp: "24.0"]
+      ]
+  """
+  @spec compatible(keyword()) :: [keyword()]
+  def compatible(versions \\ from_config(), [{key1, versions1}, {key2, versions2}])
+      when is_atom(key1) and is_atom(key2) do
+    versions =
+      case Impl.type(versions) do
+        {:table, versions} ->
+          versions
+
+        _error ->
+          raise ArgumentError,
+            message: """
+            compatible/2 expected a table of versions as first argument, \
+            got: #{inspect(versions)}\
+            """
+      end
+
+    versions1 =
+      case Impl.type(versions1) do
+        {:list, versions} ->
+          versions
+
+        _error ->
+          raise ArgumentError,
+            message: """
+            compatible/2 expected a list of versions for #{inspect(key1)}, \
+            got: #{inspect(versions1)}\
+            """
+      end
+
+    versions2 =
+      case Impl.type(versions2) do
+        {:list, versions} ->
+          versions
+
+        _error ->
+          raise ArgumentError,
+            message: """
+            compatible/2 expected a list of versions for #{inspect(key2)}, \
+            got: #{inspect(versions2)}\
+            """
+      end
+
+    Impl.compatible(versions, {key1, versions1}, {key2, versions2})
   end
 
   @doc """
@@ -651,11 +723,22 @@ defmodule GitHubActions.Versions do
   @doc """
   Returns the versions matrix for the given requirements.
 
+  ## Options
+
+    - `:mode` - accepts `:include` or `:exclude`. Defaults to `:exclude`.
+
+      With `:exclude` a keyword list with all versions for the requirements and
+      a table with the incompatible versions is returned. The table of
+      incompatible versions can be found under the `:exclude` key.
+
+      With `:include` only the compatible versions are returned. The table of
+      compatible versions can be found under the `:include` key.
+
   ## Examples
 
       iex> matrix = Versions.matrix(elixir: ">= 1.12.0", otp: ">= 22.0.0")
       iex> Enum.map(matrix[:elixir], &to_string/1)
-      ["1.12.3", "1.13.4", "1.14.5", "1.15.8", "1.16.3", "1.17.3", "1.18.0"]
+      ["1.12.3", "1.13.4", "1.14.5", "1.15.8", "1.16.3", "1.17.3", "1.18.1"]
       iex> Enum.map(matrix[:otp], &to_string/1)
       ["22.3", "23.3", "24.3", "25.3", "26.2", "27.2"]
       iex> for [{k1, v1}, {k2, v2}] <- matrix[:exclude] do
@@ -678,9 +761,32 @@ defmodule GitHubActions.Versions do
         [elixir: "1.17.3", otp: "22.3"],
         [elixir: "1.17.3", otp: "23.3"],
         [elixir: "1.17.3", otp: "24.3"],
-        [elixir: "1.18.0", otp: "22.3"],
-        [elixir: "1.18.0", otp: "23.3"],
-        [elixir: "1.18.0", otp: "24.3"]
+        [elixir: "1.18.1", otp: "22.3"],
+        [elixir: "1.18.1", otp: "23.3"],
+        [elixir: "1.18.1", otp: "24.3"]
+      ]
+
+      iex> matrix = Versions.matrix(
+      ...>   elixir: ">= 1.15.0 and < 1.19.0",
+      ...>   otp: ">= 22.0.0",
+      ...>   mode: :include
+      ...> )
+      iex> for [{k1, v1}, {k2, v2}] <- matrix[:include] do
+      ...>   [{k1, to_string(v1)}, {k2, to_string(v2)}]
+      ...> end
+      [
+        [elixir: "1.15.8", otp: "24.3"],
+        [elixir: "1.15.8", otp: "25.3"],
+        [elixir: "1.15.8", otp: "26.2"],
+        [elixir: "1.16.3", otp: "24.3"],
+        [elixir: "1.16.3", otp: "25.3"],
+        [elixir: "1.16.3", otp: "26.2"],
+        [elixir: "1.17.3", otp: "25.3"],
+        [elixir: "1.17.3", otp: "26.2"],
+        [elixir: "1.17.3", otp: "27.2"],
+        [elixir: "1.18.1", otp: "25.3"],
+        [elixir: "1.18.1", otp: "26.2"],
+        [elixir: "1.18.1", otp: "27.2"]
       ]
 
       iex> Versions.matrix([], elixir: ">= 1.9.0", otp: ">= 22.0.0")
@@ -700,6 +806,111 @@ defmodule GitHubActions.Versions do
           got: #{inspect(versions)}\
           """
     end
+  end
+
+  @doc """
+  Minimizes the given versions table.
+
+  Returns the minimised table where each version of the table is present at least
+  once in the result. This means that not all possible combinations are present
+  in the result.
+
+  ## Examples
+
+      iex> versions = [
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 24, minor: 3}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 25, minor: 3}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 26, minor: 2}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 25, minor: 3}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 26, minor: 2}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 27, minor: 2}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+      ...>     otp: %GitHubActions.Version{major: 25, minor: 3}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+      ...>     otp: %GitHubActions.Version{major: 26, minor: 2}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+      ...>     otp: %GitHubActions.Version{major: 27, minor: 2}
+      ...>   ]
+      ...> ]
+      iex> Versions.minimize(versions)
+      [
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+          otp: %GitHubActions.Version{major: 27, minor: 2}
+        ],
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+          otp: %GitHubActions.Version{major: 26, minor: 2}
+        ],
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+          otp: %GitHubActions.Version{major: 25, minor: 3}
+        ],
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3},
+          otp: %GitHubActions.Version{major: 25, minor: 3}
+        ],
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3},
+          otp: %GitHubActions.Version{major: 24, minor: 3}
+        ]
+      ]
+
+  """
+  @spec minimize(list(keyword())) :: list(keyword())
+  def minimize(versions) do
+    versions
+    |> Enum.group_by(
+      fn versions -> Enum.take(versions, 1) end,
+      fn versions -> Enum.drop(versions, 1) end
+    )
+    |> Enum.to_list()
+    |> Enum.sort(fn {[{_key1, version1}], _other1}, {[{_key2, version2}], _other2} ->
+      Version.compare(version1, version2) == :gt
+    end)
+    |> minimize([], [])
+  end
+
+  defp minimize([], _seen, acc), do: Enum.reverse(acc)
+
+  defp minimize([{version, versions} | rest], seen, acc) do
+    {unseen, seen} =
+      Enum.flat_map_reduce(versions, seen, fn otp, seen ->
+        if otp in seen do
+          {[], seen}
+        else
+          {[otp], [otp | seen]}
+        end
+      end)
+
+    unseen = if unseen == [], do: Enum.take(versions, 1), else: unseen
+
+    acc = Enum.map(unseen, fn otp -> version ++ otp end) ++ acc
+
+    minimize(rest, seen, acc)
   end
 
   @doc """
@@ -804,7 +1015,7 @@ defmodule GitHubActions.Versions do
       Enum.map(versions, fn row -> Enum.uniq(row) end)
     end
 
-    defp expand(versions) do
+    defp expand(versions) when is_list(versions) do
       Enum.flat_map(versions, fn version -> do_expand(version) end)
     end
 
@@ -855,7 +1066,7 @@ defmodule GitHubActions.Versions do
       Enum.filter(versions, fn version -> Version.match?(version, requirement) end)
     end
 
-    def compatible(versions, key, {to_key, to_versions}) do
+    def compatible_to(versions, key, {to_key, to_versions}) do
       Enum.flat_map(versions, fn row ->
         case row |> Keyword.get(to_key, []) |> intersection?(to_versions) do
           true -> Keyword.get(row, key, [])
@@ -866,14 +1077,22 @@ defmodule GitHubActions.Versions do
 
     def compatible?(versions, {key1, version1}, {key2, version2}) do
       versions
-      |> compatible(key2, {key1, List.wrap(version1)})
+      |> compatible_to(key2, {key1, List.wrap(version1)})
       |> member?(version2)
     end
 
     def incompatible(versions, {key1, versions1}, {key2, versions2}) do
+      compatible(versions, {key1, versions1}, {key2, versions2}, false)
+    end
+
+    def compatible(versions, {key1, versions1}, {key2, versions2}) do
+      compatible(versions, {key1, versions1}, {key2, versions2}, true)
+    end
+
+    def compatible(versions, {key1, versions1}, {key2, versions2}, compatible?) do
       for version1 <- versions1,
           version2 <- versions2,
-          compatible?(versions, {key1, version1}, {key2, version2}) == false do
+          compatible?(versions, {key1, version1}, {key2, version2}) == compatible? do
         [{key1, version1}, {key2, version2}]
       end
     end
@@ -894,13 +1113,19 @@ defmodule GitHubActions.Versions do
 
       otp =
         versions
-        |> compatible(:otp, {:elixir, elixir})
+        |> compatible_to(:otp, {:elixir, elixir})
         |> filter(Keyword.fetch!(opts, :otp))
         |> latest_major()
 
-      case incompatible(versions, {:elixir, elixir}, {:otp, otp}) do
-        [] -> [elixir: elixir, otp: otp]
-        exclude -> [elixir: elixir, otp: otp, exclude: exclude]
+      case Keyword.get(opts, :mode, :exclude) do
+        :exclude ->
+          exclude = incompatible(versions, {:elixir, elixir}, {:otp, otp})
+          result = [elixir: elixir, otp: otp]
+          if Enum.empty?(exclude), do: result, else: result ++ [{:exclude, exclude}]
+
+        :include ->
+          include = compatible(versions, {:elixir, elixir}, {:otp, otp})
+          [include: include]
       end
     end
   end

@@ -24,13 +24,10 @@ defmodule GitHubActions.Default do
   defp otp_version, do: "> 21.0.0"
 
   defp matrix do
-    [
+    Versions.matrix(
       elixir: elixir_version(),
-      otp: otp_version(),
-      mode: :include
-    ]
-    |> Versions.matrix()
-    |> Keyword.update!(:include, &Versions.minimize/1)
+      otp: otp_version()
+    )
   end
 
   defp job(:linux = os) do
@@ -257,7 +254,7 @@ defmodule GitHubActions.Default do
     end
   end
 
-  defp run_tests(os) when os in [:windows, :macos] do
+  defp run_tests(:windows) do
     [
       name: "Run tests",
       run: mix(:test)
@@ -281,7 +278,7 @@ defmodule GitHubActions.Default do
     end
   end
 
-  defp run_coverage(os) when os in [:windows, :macos], do: :skip
+  defp run_coverage(:windows), do: :skip
 
   defp run_coverage(_nix) do
     case Project.has_dep?(:excoveralls) do

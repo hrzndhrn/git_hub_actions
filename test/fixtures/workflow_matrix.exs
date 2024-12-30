@@ -32,7 +32,7 @@ defmodule Test.WorkflowMatrix do
       |> Versions.filter("~> 1.10")
       |> Versions.latest_minor()
 
-    otp = :otp |> Versions.compatible(elixir: elixir) |> Versions.latest_major()
+    otp = :otp |> Versions.compatible_to(elixir: elixir) |> Versions.latest_major()
 
     exclude = Versions.incompatible(elixir: elixir, otp: otp)
 

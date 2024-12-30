@@ -1,8 +1,12 @@
 # Changelog
 
-## 0.2.28 dev
+## 0.3.0 2024/12/30
 
 - Add setup-beam-version to cache keys.
+- Add `GitHubActions.Versions.minimize/1`
+- Reduce jobs in the default workflow script.
+- Update docs.
+- Add Elixir version `1.18.1` to config
 
 ## 0.2.27 2024/12/23
 
