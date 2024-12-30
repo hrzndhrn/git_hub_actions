@@ -151,6 +151,7 @@ defmodule GitHubActions.WorkflowTest do
                       [name: "Checkout", uses: "actions/checkout@v4"],
                       [
                         name: "Setup Elixir",
+                        id: "setup-beam",
                         uses: "erlef/setup-beam@v1",
                         with: [
                           "elixir-version": "${{ matrix.elixir }}",
@@ -267,6 +268,7 @@ defmodule GitHubActions.WorkflowTest do
                       [name: "Checkout", uses: "actions/checkout@v4"],
                       [
                         name: "Setup Elixir",
+                        id: "setup-beam",
                         uses: "erlef/setup-beam@v1",
                         with: [
                           "elixir-version": "${{ matrix.elixir }}",

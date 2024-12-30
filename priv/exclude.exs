@@ -111,6 +111,7 @@ defmodule GitHubActions.Default do
   defp setup_elixir(:linux) do
     [
       name: "Setup Elixir",
+      id: "setup-beam",
       uses: "erlef/setup-beam@v1",
       with: [
         elixir_version: ~e[matrix.elixir],
@@ -122,6 +123,7 @@ defmodule GitHubActions.Default do
   defp setup_elixir(:macos) do
     [
       name: "Setup Elixir",
+      id: "setup-beam",
       run: "brew install elixir"
     ]
   end
@@ -129,6 +131,7 @@ defmodule GitHubActions.Default do
   defp setup_elixir(:windows) do
     [
       name: "Setup Elixir",
+      id: "setup-beam",
       uses: "erlef/setup-beam@v1",
       with: [
         elixir_version: Versions.latest(:elixir),

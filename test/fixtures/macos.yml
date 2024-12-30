@@ -12,6 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Elixir
+        id: setup-beam
         run: brew install elixir
       - name: Install hex
         run: mix local.hex --force

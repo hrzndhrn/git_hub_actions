@@ -12,6 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Elixir
+        id: setup-beam
         uses: erlef/setup-beam@v1
         with:
           elixir-version: '1.18.1'
