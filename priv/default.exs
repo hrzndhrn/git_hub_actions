@@ -16,48 +16,21 @@ defmodule GitHubActions.Default do
     ]
   end
 
-  @otp_version "> 21.0.0"
-
   defp elixir_version do
     elixir = Config.get(:elixir)
     if elixir, do: "~> #{Version.minor(elixir)}", else: Project.elixir()
   end
 
+  defp otp_version, do: "> 21.0.0"
+
   defp matrix do
-    [elixir: elixir_version(), otp: @otp_version]
+    [
+      elixir: elixir_version(),
+      otp: otp_version(),
+      mode: :include
+    ]
     |> Versions.matrix()
-    |> Keyword.take([:include])
-    |> Keyword.update!(:include, &minimal/1)
-  end
-
-  defp minimal(versions) do
-    versions
-    |> Enum.group_by(
-      fn versions -> versions[:elixir] end,
-      fn versions -> versions[:otp] end
-    )
-    |> Enum.to_list()
-    |> Enum.sort(fn {e1, _o1}, {e2, _o2} -> Version.compare(e1, e2) == :gt end)
-    |> minimal([], [])
-  end
-
-  defp minimal([], _seen, acc), do: Enum.reverse(acc)
-
-  defp minimal([{elixir, otps} | rest], seen, acc) do
-    {unseen, seen} =
-      Enum.flat_map_reduce(otps, seen, fn otp, seen ->
-        if otp in seen do
-          {[], seen}
-        else
-          {[otp], [otp | seen]}
-        end
-      end)
-
-    unseen = if unseen == [], do: Enum.take(otps, 1), else: unseen
-
-    acc = Enum.map(unseen, fn otp -> [elixir: elixir, otp: otp] end) ++ acc
-
-    minimal(rest, seen, acc)
+    |> Keyword.update!(:include, &Versions.minimize/1)
   end
 
   defp job(:linux = os) do

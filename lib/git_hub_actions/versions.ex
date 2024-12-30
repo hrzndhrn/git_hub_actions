@@ -723,6 +723,17 @@ defmodule GitHubActions.Versions do
   @doc """
   Returns the versions matrix for the given requirements.
 
+  ## Options
+
+    - `:mode` - accepts `:include` or `:exclude`. Defaults to `:exclude`.
+
+      With `:exclude` a keyword list with all versions for the requirements and
+      a table with the incompatible versions is returned. The table of
+      incompatible versions can be found under the `:exclude` key.
+
+      With `:include` only the compatible versions are returned. The table of
+      compatible versions can be found under the `:include` key.
+
   ## Examples
 
       iex> matrix = Versions.matrix(elixir: ">= 1.12.0", otp: ">= 22.0.0")
@@ -755,6 +766,29 @@ defmodule GitHubActions.Versions do
         [elixir: "1.18.0", otp: "24.3"]
       ]
 
+      iex> matrix = Versions.matrix(
+      ...>   elixir: ">= 1.15.0 and < 1.19.0",
+      ...>   otp: ">= 22.0.0",
+      ...>   mode: :include
+      ...> )
+      iex> for [{k1, v1}, {k2, v2}] <- matrix[:include] do
+      ...>   [{k1, to_string(v1)}, {k2, to_string(v2)}]
+      ...> end
+      [
+        [elixir: "1.15.8", otp: "24.3"],
+        [elixir: "1.15.8", otp: "25.3"],
+        [elixir: "1.15.8", otp: "26.2"],
+        [elixir: "1.16.3", otp: "24.3"],
+        [elixir: "1.16.3", otp: "25.3"],
+        [elixir: "1.16.3", otp: "26.2"],
+        [elixir: "1.17.3", otp: "25.3"],
+        [elixir: "1.17.3", otp: "26.2"],
+        [elixir: "1.17.3", otp: "27.2"],
+        [elixir: "1.18.0", otp: "25.3"],
+        [elixir: "1.18.0", otp: "26.2"],
+        [elixir: "1.18.0", otp: "27.2"]
+      ]
+
       iex> Versions.matrix([], elixir: ">= 1.9.0", otp: ">= 22.0.0")
       ** (ArgumentError) matrix/1 expected a table of versions as first argument, got: []
 
@@ -772,6 +806,111 @@ defmodule GitHubActions.Versions do
           got: #{inspect(versions)}\
           """
     end
+  end
+
+  @doc """
+  Minimizes the given versions table.
+
+  Returns the minimised table where each version of the table is present at least
+  once in the result. This means that not all possible combinations are present
+  in the result.
+
+  ## Examples
+
+      iex> versions = [
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 24, minor: 3}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 25, minor: 3}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 26, minor: 2}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 25, minor: 3}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 26, minor: 2}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3},
+      ...>     otp: %GitHubActions.Version{major: 27, minor: 2}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+      ...>     otp: %GitHubActions.Version{major: 25, minor: 3}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+      ...>     otp: %GitHubActions.Version{major: 26, minor: 2}
+      ...>   ],
+      ...>   [
+      ...>     elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+      ...>     otp: %GitHubActions.Version{major: 27, minor: 2}
+      ...>   ]
+      ...> ]
+      iex> Versions.minimize(versions)
+      [
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+          otp: %GitHubActions.Version{major: 27, minor: 2}
+        ],
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+          otp: %GitHubActions.Version{major: 26, minor: 2}
+        ],
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 0},
+          otp: %GitHubActions.Version{major: 25, minor: 3}
+        ],
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3},
+          otp: %GitHubActions.Version{major: 25, minor: 3}
+        ],
+        [
+          elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3},
+          otp: %GitHubActions.Version{major: 24, minor: 3}
+        ]
+      ]
+
+  """
+  @spec minimize(list(keyword())) :: list(keyword())
+  def minimize(versions) do
+    versions
+    |> Enum.group_by(
+      fn versions -> Enum.take(versions, 1) end,
+      fn versions -> Enum.drop(versions, 1) end
+    )
+    |> Enum.to_list()
+    |> Enum.sort(fn {[{_key1, version1}], _other1}, {[{_key2, version2}], _other2} ->
+      Version.compare(version1, version2) == :gt
+    end)
+    |> minimize([], [])
+  end
+
+  defp minimize([], _seen, acc), do: Enum.reverse(acc)
+
+  defp minimize([{version, versions} | rest], seen, acc) do
+    {unseen, seen} =
+      Enum.flat_map_reduce(versions, seen, fn otp, seen ->
+        if otp in seen do
+          {[], seen}
+        else
+          {[otp], [otp | seen]}
+        end
+      end)
+
+    unseen = if unseen == [], do: Enum.take(versions, 1), else: unseen
+
+    acc = Enum.map(unseen, fn otp -> version ++ otp end) ++ acc
+
+    minimize(rest, seen, acc)
   end
 
   @doc """
@@ -876,7 +1015,7 @@ defmodule GitHubActions.Versions do
       Enum.map(versions, fn row -> Enum.uniq(row) end)
     end
 
-    defp expand(versions) do
+    defp expand(versions) when is_list(versions) do
       Enum.flat_map(versions, fn version -> do_expand(version) end)
     end
 
@@ -978,14 +1117,16 @@ defmodule GitHubActions.Versions do
         |> filter(Keyword.fetch!(opts, :otp))
         |> latest_major()
 
-      exclude = incompatible(versions, {:elixir, elixir}, {:otp, otp})
-      include = compatible(versions, {:elixir, elixir}, {:otp, otp})
+      case Keyword.get(opts, :mode, :exclude) do
+        :exclude ->
+          exclude = incompatible(versions, {:elixir, elixir}, {:otp, otp})
+          result = [elixir: elixir, otp: otp]
+          if Enum.empty?(exclude), do: result, else: result ++ [{:exclude, exclude}]
 
-      result = [elixir: elixir, otp: otp]
-
-      result = if Enum.empty?(exclude), do: result, else: result ++ [{:exclude, exclude}]
-
-      if Enum.empty?(include), do: result, else: result ++ [{:include, include}]
+        :include ->
+          include = compatible(versions, {:elixir, elixir}, {:otp, otp})
+          [include: include]
+      end
     end
   end
 end

@@ -565,7 +565,7 @@ defmodule GitHubActions.VersionsTest do
   end
 
   describe "matrix/2" do
-    test "create matrix for elixir requirement '> 1.10'" do
+    test "creates matrix with default mode :exclude" do
       assert Versions.matrix(elixir: ">= 1.10.0 and < 1.13.3", otp: ">= 20.0.0 and < 24.0.0") == [
                elixir: [
                  Version.parse!("1.10.4"),
@@ -581,7 +581,16 @@ defmodule GitHubActions.VersionsTest do
                exclude: [
                  [elixir: Version.parse!("1.12.3"), otp: Version.parse!("21.3")],
                  [elixir: Version.parse!("1.13.2"), otp: Version.parse!("21.3")]
-               ],
+               ]
+             ]
+    end
+
+    test "creates matrix with mode :include" do
+      assert Versions.matrix(
+               elixir: ">= 1.10.0 and < 1.13.3",
+               otp: ">= 20.0.0 and < 24.0.0",
+               mode: :include
+             ) == [
                include: [
                  [elixir: Version.parse!("1.10.4"), otp: Version.parse!("21.3")],
                  [elixir: Version.parse!("1.10.4"), otp: Version.parse!("22.3")],
@@ -600,9 +609,17 @@ defmodule GitHubActions.VersionsTest do
     test "create matrix for elixir requirement '== 1.13.3'" do
       assert Versions.matrix(elixir: "== 1.13.3", otp: "== 23.0.0") == [
                elixir: [Version.parse!("1.13.3")],
-               otp: [Version.parse!("23.0")],
+               otp: [Version.parse!("23.0")]
+             ]
+    end
+
+    test "create matrix for elixir requirement '== 1.13.3' and mode: :include" do
+      assert Versions.matrix(elixir: "== 1.13.3", otp: "== 23.0.0", mode: :include) == [
                include: [
-                 [elixir: Version.parse!("1.13.3"), otp: Version.parse!("23.0")]
+                 [
+                   elixir: Version.parse!("1.13.3"),
+                   otp: Version.parse!("23.0")
+                 ]
                ]
              ]
     end

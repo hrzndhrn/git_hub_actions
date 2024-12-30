@@ -16,17 +16,18 @@ defmodule GitHubActions.Default do
     ]
   end
 
-  @otp_version "> 21.0.0"
-
   defp elixir_version do
     elixir = Config.get(:elixir)
     if elixir, do: "~> #{Version.minor(elixir)}", else: Project.elixir()
   end
 
+  defp otp_version, do: "> 21.0.0"
+
   defp matrix do
-    [elixir: elixir_version(), otp: @otp_version]
-    |> Versions.matrix()
-    |> Keyword.take([:elixir, :otp, :exclude])
+    Versions.matrix(
+      elixir: elixir_version(),
+      otp: otp_version()
+    )
   end
 
   defp job(:linux = os) do

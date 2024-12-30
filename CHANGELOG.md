@@ -3,8 +3,9 @@
 ## 0.3.0 dev
 
 - Add setup-beam-version to cache keys.
-- Update docs.
+- Add `GitHubActions.Versions.minimize/1`
 - Reduce jobs in the default workflow script.
+- Update docs.
 
 ## 0.2.27 2024/12/23
 
