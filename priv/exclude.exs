@@ -173,15 +173,19 @@ defmodule GitHubActions.Default do
         :skip
 
       true ->
+        {opt_if, opts} = Keyword.pop(opts, :if)
+        opt_if = if opt_if, do: [if: opt_if], else: []
+
         Keyword.merge(
-          [
-            name: "Restore #{path}",
-            uses: "actions/cache@v4",
-            with: [
-              path: path,
-              key: key(path)
-            ]
-          ],
+          [name: "Restore #{path}"] ++
+            opt_if ++
+            [
+              uses: "actions/cache@v4",
+              with: [
+                path: path,
+                key: key(path)
+              ]
+            ],
           opts
         )
     end
@@ -262,8 +266,8 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Run tests",
-          run: mix(:test),
-          if: latest_version(false)
+          if: latest_version(false),
+          run: mix(:test)
         ]
 
       false ->
@@ -281,8 +285,8 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Run tests with coverage",
-          run: mix(:coveralls, Config.get([:steps, :coveralls])),
-          if: latest_version(true)
+          if: latest_version(true),
+          run: mix(:coveralls, Config.get([:steps, :coveralls]))
         ]
 
       false ->
@@ -298,8 +302,8 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Static code analysis",
-          run: mix(:dialyzer, force_check: true, format: "github"),
-          if: latest_version(true)
+          if: latest_version(true),
+          run: mix(:dialyzer, force_check: true, format: "github")
         ]
     end
   end
@@ -315,15 +319,15 @@ defmodule GitHubActions.Default do
 
   defp latest_version(true) do
     ~e"""
-    contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
-    contains(matrix.otp, '#{Versions.latest(:otp)}')\
+    matrix.elixir == '#{Versions.latest(:elixir)}' && \
+    matrix.otp == '#{Versions.latest(:otp)}'\
     """
   end
 
   defp latest_version(false) do
     ~e"""
-    !(contains(matrix.elixir, '#{Versions.latest(:elixir)}') && \
-    contains(matrix.otp, '#{Versions.latest(:otp)}'))\
+    !(matrix.elixir == '#{Versions.latest(:elixir)}' && \
+    matrix.otp == '#{Versions.latest(:otp)}')\
     """
   end
 

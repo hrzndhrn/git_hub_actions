@@ -177,14 +177,13 @@ defmodule GitHubActions.WorkflowTest do
                       ],
                       [
                         name: "Restore test/support/plts",
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
                         uses: "actions/cache@v4",
                         with: [
                           path: "test/support/plts",
                           key:
                             "test/support/plts-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}"
-                        ],
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}"
+                        ]
                       ],
                       [name: "Get dependencies", run: "mix deps.get"],
                       [name: "Compile dependencies", run: "MIX_ENV=test mix deps.compile"],
@@ -194,39 +193,33 @@ defmodule GitHubActions.WorkflowTest do
                       ],
                       [
                         name: "Check unused dependencies",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}",
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
                         run: "mix deps.unlock --check-unused"
                       ],
                       [
                         name: "Check code format",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}",
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
                         run: "mix format --check-formatted"
                       ],
                       [
                         name: "Lint code",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}",
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
                         run: "mix credo --strict"
                       ],
                       [
                         name: "Run tests",
-                        run: "mix test",
-                        if:
-                          "${{ !(contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2')) }}"
+                        if: "${{ !(matrix.elixir == '1.18.0' && matrix.otp == '27.2') }}",
+                        run: "mix test"
                       ],
                       [
                         name: "Run tests with coverage",
-                        run: "mix coveralls.github",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}"
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
+                        run: "mix coveralls.github"
                       ],
                       [
                         name: "Static code analysis",
-                        run: "mix dialyzer --format github --force-check",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}"
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
+                        run: "mix dialyzer --format github --force-check"
                       ]
                     ]
                   ]
@@ -300,14 +293,13 @@ defmodule GitHubActions.WorkflowTest do
                       ],
                       [
                         name: "Restore test/support/plts",
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
                         uses: "actions/cache@v4",
                         with: [
                           path: "test/support/plts",
                           key:
                             "test/support/plts-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}"
-                        ],
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}"
+                        ]
                       ],
                       [name: "Get dependencies", run: "mix deps.get"],
                       [name: "Compile dependencies", run: "MIX_ENV=test mix deps.compile"],
@@ -317,39 +309,33 @@ defmodule GitHubActions.WorkflowTest do
                       ],
                       [
                         name: "Check unused dependencies",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}",
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
                         run: "mix deps.unlock --check-unused"
                       ],
                       [
                         name: "Check code format",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}",
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
                         run: "mix format --check-formatted"
                       ],
                       [
                         name: "Lint code",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}",
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
                         run: "mix credo --strict"
                       ],
                       [
                         name: "Run tests",
-                        run: "mix test",
-                        if:
-                          "${{ !(contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2')) }}"
+                        if: "${{ !(matrix.elixir == '1.18.0' && matrix.otp == '27.2') }}",
+                        run: "mix test"
                       ],
                       [
                         name: "Run tests with coverage",
-                        run: "mix coveralls.github",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}"
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
+                        run: "mix coveralls.github"
                       ],
                       [
                         name: "Static code analysis",
-                        run: "mix dialyzer --format github --force-check",
-                        if:
-                          "${{ contains(matrix.elixir, '1.18.0') && contains(matrix.otp, '27.2') }}"
+                        if: "${{ matrix.elixir == '1.18.0' && matrix.otp == '27.2' }}",
+                        run: "mix dialyzer --format github --force-check"
                       ]
                     ]
                   ]
