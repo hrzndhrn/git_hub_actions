@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 2025/01/23
+
+- Add Elixir version `1.18.2` to config
+
 ## 0.3.0 2024/12/30
 
 - Add setup-beam-version to cache keys.
