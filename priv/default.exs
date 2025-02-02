@@ -73,6 +73,8 @@ defmodule GitHubActions.Default do
       steps: [
         checkout(),
         setup_elixir(os),
+        restore(:deps, key: [matrix: false]),
+        restore(:_build, key: [matrix: false]),
         get_deps(),
         compile_deps(os),
         compile(os),
@@ -91,8 +93,8 @@ defmodule GitHubActions.Default do
         setup_elixir(os),
         install_hex(),
         install_rebar(),
-        restore(:deps),
-        restore(:_build),
+        restore(:deps, key: [matrix: false]),
+        restore(:_build, key: [matrix: false]),
         get_deps(),
         compile_deps(os),
         compile(os),
@@ -162,7 +164,9 @@ defmodule GitHubActions.Default do
     ]
   end
 
-  defp restore(:dialyxir) do
+  defp restore(path, opts \\ [])
+
+  defp restore(:dialyxir, opts) do
     case Project.has_dep?(:dialyxir) and Config.get([:steps, :dialyxir]) do
       false ->
         :skip
@@ -175,12 +179,14 @@ defmodule GitHubActions.Default do
           {:ok, {_, file}} ->
             file
             |> Path.dirname()
-            |> restore(if: ~e[matrix.lint])
+            |> restore([if: ~e[matrix.lint]] ++ opts)
         end
     end
   end
 
-  defp restore(path, opts \\ []) do
+  defp restore(path, opts) do
+    {key_opts, opts} = Keyword.pop(opts, :key, [])
+
     case Config.fetch!([:steps, :refresh]) do
       false ->
         :skip
@@ -196,7 +202,7 @@ defmodule GitHubActions.Default do
               uses: "actions/cache@v4",
               with: [
                 path: path,
-                key: key(path)
+                key: key(path, key_opts)
               ]
             ],
           opts
@@ -321,14 +327,21 @@ defmodule GitHubActions.Default do
     end
   end
 
-  defp key(key) do
+  defp key(key, opts) do
+    matrix? = Keyword.get(opts, :matrix, true)
+
     os = ~e[runner.os]
-    elixir = ~e[matrix.elixir]
-    otp = ~e[matrix.otp]
     setup_beam_version = ~e{steps.setup-beam.outputs.setup-beam-version}
     lock = ~e[hashFiles(format('{0}{1}', github.workspace, '/mix.lock'))]
 
-    ~q"#{key}\n-#{os}\n-#{elixir}\n-#{otp}\n-#{lock}\n-#{setup_beam_version}"e
+    if matrix? do
+      elixir = ~e[matrix.elixir]
+      otp = ~e[matrix.otp]
+
+      ~q"#{key}\n-#{os}\n-#{elixir}\n-#{otp}\n-#{lock}\n-#{setup_beam_version}"e
+    else
+      ~q"#{key}\n-#{os}\n-#{lock}\n-#{setup_beam_version}"e
+    end
   end
 
   defp member?(key, value), do: key |> Config.get() |> Enum.member?(value)

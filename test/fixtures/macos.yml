@@ -24,8 +24,6 @@ jobs:
           path: deps
           key: "deps\
             -${{ runner.os }}\
-            -${{ matrix.elixir }}\
-            -${{ matrix.otp }}\
             -${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}\
             -${{ steps.setup-beam.outputs.setup-beam-version }}"
       - name: Restore _build
@@ -34,8 +32,6 @@ jobs:
           path: _build
           key: "_build\
             -${{ runner.os }}\
-            -${{ matrix.elixir }}\
-            -${{ matrix.otp }}\
             -${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}\
             -${{ steps.setup-beam.outputs.setup-beam-version }}"
       - name: Get dependencies
