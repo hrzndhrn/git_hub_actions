@@ -29,9 +29,21 @@ defmodule GitHubActions.Yaml do
   defp do_encode([{key, item} | data], lines, depth) when is_binary(item) do
     item = if num_or_version?(item), do: "'#{item}'", else: item
 
-    case lines?(item) do
+    case multiline?(item) do
       true ->
         add = indent_heredoc(key, item, depth)
+        do_encode(data, add ++ lines, depth)
+
+      false ->
+        add = indent_key(key, item, depth)
+        do_encode(data, [add | lines], depth)
+    end
+  end
+
+  defp do_encode([{key, {:quoted, item}} | data], lines, depth) do
+    case multiline?(item) do
+      true ->
+        add = indent_multiline(key, item, depth)
         do_encode(data, add ++ lines, depth)
 
       false ->
@@ -69,6 +81,8 @@ defmodule GitHubActions.Yaml do
 
   defp indent_key(key, depth), do: "#{indent(depth)}#{key}:"
 
+  defp indent_key(key, item, depth), do: "#{indent_key(key, depth)} #{item}"
+
   defp indent_heredoc(string, depth) do
     string
     |> String.trim_trailing()
@@ -77,15 +91,30 @@ defmodule GitHubActions.Yaml do
     |> Enum.reverse()
   end
 
-  defp indent_key(key, item, depth), do: "#{indent_key(key, depth)} #{item}"
-
   defp indent_heredoc(key, string, depth) do
     lines = indent_heredoc(string, depth + 1)
     line = "#{indent_key(key, depth)} |"
     lines ++ [line]
   end
 
-  defp lines?(string), do: String.contains?(string, "\n")
+  defp indent_multiline(string, depth) do
+    [line | lines] =
+      string
+      |> String.trim_trailing()
+      |> String.split("\n")
+
+    lines = lines |> indent(depth) |> Enum.reverse()
+
+    {line, lines}
+  end
+
+  defp indent_multiline(key, string, depth) do
+    {line, lines} = indent_multiline(string, depth + 1)
+    line = "#{indent_key(key, depth)} #{line}"
+    lines ++ [line]
+  end
+
+  defp multiline?(string), do: String.contains?(string, "\n")
 
   defp newline(string), do: "#{string}\n"
 

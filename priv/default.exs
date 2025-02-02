@@ -31,6 +31,11 @@ defmodule GitHubActions.Default do
     ]
     |> Versions.matrix()
     |> Keyword.update!(:include, &Versions.minimize/1)
+    |> Keyword.update!(:include, &add_at(&1, 0, coverage: true, lint: true))
+  end
+
+  defp add_at(list, pos, keywords) do
+    List.update_at(list, pos, &Enum.concat(&1, keywords))
   end
 
   defp job(:linux = os) do
@@ -168,7 +173,9 @@ defmodule GitHubActions.Default do
             :skip
 
           {:ok, {_, file}} ->
-            file |> Path.dirname() |> restore(if: latest_version(true))
+            file
+            |> Path.dirname()
+            |> restore(if: ~e[matrix.lint])
         end
     end
   end
@@ -226,7 +233,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Check unused dependencies",
-          if: latest_version(true),
+          if: ~e[matrix.lint],
           run: mix(:deps, :unlock, check_unused: true)
         ]
     end
@@ -240,7 +247,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Check code format",
-          if: latest_version(true),
+          if: ~e[matrix.lint],
           run: mix(:format, check_formatted: true)
         ]
     end
@@ -254,7 +261,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Lint code",
-          if: latest_version(true),
+          if: ~e[matrix.lint],
           run: mix(:credo, strict: true)
         ]
     end
@@ -272,7 +279,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Run tests",
-          if: latest_version(false),
+          if: ~e[!matrix.coverage],
           run: mix(:test)
         ]
 
@@ -291,7 +298,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Run tests with coverage",
-          if: latest_version(true),
+          if: ~e[matrix.coverage],
           run: mix(:coveralls, Config.get([:steps, :coveralls]))
         ]
 
@@ -308,7 +315,7 @@ defmodule GitHubActions.Default do
       true ->
         [
           name: "Static code analysis",
-          if: latest_version(true),
+          if: ~e[matrix.lint],
           run: mix(:dialyzer, force_check: true, format: "github")
         ]
     end
@@ -320,21 +327,8 @@ defmodule GitHubActions.Default do
     otp = ~e[matrix.otp]
     setup_beam_version = ~e{steps.setup-beam.outputs.setup-beam-version}
     lock = ~e[hashFiles(format('{0}{1}', github.workspace, '/mix.lock'))]
-    "#{key}-#{os}-#{elixir}-#{otp}-#{lock}-#{setup_beam_version}"
-  end
 
-  defp latest_version(true) do
-    ~e"""
-    matrix.elixir == '#{Versions.latest(:elixir)}' && \
-    matrix.otp == '#{Versions.latest(:otp)}'\
-    """
-  end
-
-  defp latest_version(false) do
-    ~e"""
-    !(matrix.elixir == '#{Versions.latest(:elixir)}' && \
-    matrix.otp == '#{Versions.latest(:otp)}')\
-    """
+    ~q"#{key}\n-#{os}\n-#{elixir}\n-#{otp}\n-#{lock}\n-#{setup_beam_version}"e
   end
 
   defp member?(key, value), do: key |> Config.get() |> Enum.member?(value)

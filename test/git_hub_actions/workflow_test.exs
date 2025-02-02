@@ -122,111 +122,108 @@ defmodule GitHubActions.WorkflowTest do
              ]}
 
     prove "default workflow",
-          Workflow.eval("priv/default.exs") ==
-            {
-              :ok,
-              [
-                name: "CI",
-                env: [GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"],
-                on: ["pull_request", "push"],
-                jobs: [
-                  linux: [
-                    name: "Test on Ubuntu (Elixir ${{ matrix.elixir }}, OTP ${{ matrix.otp }})",
-                    "runs-on": "ubuntu-20.04",
-                    strategy: [
-                      matrix: [
-                        include: [
-                          [elixir: "1.18.2", otp: "27.2"],
-                          [elixir: "1.18.2", otp: "26.2"],
-                          [elixir: "1.18.2", otp: "25.3"],
-                          [elixir: "1.17.3", otp: "25.3"],
-                          [elixir: "1.16.3", otp: "24.3"],
-                          [elixir: "1.15.8", otp: "24.3"],
-                          [elixir: "1.14.5", otp: "23.3"],
-                          [elixir: "1.13.4", otp: "22.3"]
-                        ]
+          Workflow.eval("priv/default.exs") == {
+            :ok,
+            [
+              name: "CI",
+              env: [GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"],
+              on: ["pull_request", "push"],
+              jobs: [
+                linux: [
+                  name: "Test on Ubuntu (Elixir ${{ matrix.elixir }}, OTP ${{ matrix.otp }})",
+                  "runs-on": "ubuntu-20.04",
+                  strategy: [
+                    matrix: [
+                      include: [
+                        [elixir: "1.18.2", otp: "27.2", coverage: "true", lint: "true"],
+                        [elixir: "1.18.2", otp: "26.2"],
+                        [elixir: "1.18.2", otp: "25.3"],
+                        [elixir: "1.17.3", otp: "25.3"],
+                        [elixir: "1.16.3", otp: "24.3"],
+                        [elixir: "1.15.8", otp: "24.3"],
+                        [elixir: "1.14.5", otp: "23.3"],
+                        [elixir: "1.13.4", otp: "22.3"]
+                      ]
+                    ]
+                  ],
+                  steps: [
+                    [name: "Checkout", uses: "actions/checkout@v4"],
+                    [
+                      name: "Setup Elixir",
+                      id: "setup-beam",
+                      uses: "erlef/setup-beam@v1",
+                      with: [
+                        "elixir-version": "${{ matrix.elixir }}",
+                        "otp-version": "${{ matrix.otp }}"
                       ]
                     ],
-                    steps: [
-                      [name: "Checkout", uses: "actions/checkout@v4"],
-                      [
-                        name: "Setup Elixir",
-                        id: "setup-beam",
-                        uses: "erlef/setup-beam@v1",
-                        with: [
-                          "elixir-version": "${{ matrix.elixir }}",
-                          "otp-version": "${{ matrix.otp }}"
-                        ]
-                      ],
-                      [
-                        name: "Restore deps",
-                        uses: "actions/cache@v4",
-                        with: [
-                          path: "deps",
-                          key:
-                            "deps-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}"
-                        ]
-                      ],
-                      [
-                        name: "Restore _build",
-                        uses: "actions/cache@v4",
-                        with: [
-                          path: "_build",
-                          key:
-                            "_build-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}"
-                        ]
-                      ],
-                      [
-                        name: "Restore test/support/plts",
-                        if: "${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}",
-                        uses: "actions/cache@v4",
-                        with: [
-                          path: "test/support/plts",
-                          key:
-                            "test/support/plts-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}"
-                        ]
-                      ],
-                      [name: "Get dependencies", run: "mix deps.get"],
-                      [name: "Compile dependencies", run: "MIX_ENV=test mix deps.compile"],
-                      [
-                        name: "Compile project",
-                        run: "MIX_ENV=test mix compile --warnings-as-errors"
-                      ],
-                      [
-                        name: "Check unused dependencies",
-                        if: "${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}",
-                        run: "mix deps.unlock --check-unused"
-                      ],
-                      [
-                        name: "Check code format",
-                        if: "${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}",
-                        run: "mix format --check-formatted"
-                      ],
-                      [
-                        name: "Lint code",
-                        if: "${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}",
-                        run: "mix credo --strict"
-                      ],
-                      [
-                        name: "Run tests",
-                        if: "${{ !(matrix.elixir == '1.18.2' && matrix.otp == '27.2') }}",
-                        run: "mix test"
-                      ],
-                      [
-                        name: "Run tests with coverage",
-                        if: "${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}",
-                        run: "mix coveralls.github"
-                      ],
-                      [
-                        name: "Static code analysis",
-                        if: "${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}",
-                        run: "mix dialyzer --format github --force-check"
+                    [
+                      name: "Restore deps",
+                      uses: "actions/cache@v4",
+                      with: [
+                        path: "deps",
+                        key: {
+                          :quoted,
+                          "\"deps\\\n-${{ runner.os }}\\\n-${{ matrix.elixir }}\\\n-${{ matrix.otp }}\\\n-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}\\\n-${{ steps.setup-beam.outputs.setup-beam-version }}\""
+                        }
                       ]
+                    ],
+                    [
+                      name: "Restore _build",
+                      uses: "actions/cache@v4",
+                      with: [
+                        path: "_build",
+                        key: {
+                          :quoted,
+                          "\"_build\\\n-${{ runner.os }}\\\n-${{ matrix.elixir }}\\\n-${{ matrix.otp }}\\\n-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}\\\n-${{ steps.setup-beam.outputs.setup-beam-version }}\""
+                        }
+                      ]
+                    ],
+                    [
+                      name: "Restore test/support/plts",
+                      if: "${{ matrix.lint }}",
+                      uses: "actions/cache@v4",
+                      with: [
+                        path: "test/support/plts",
+                        key: {
+                          :quoted,
+                          "\"test/support/plts\\\n-${{ runner.os }}\\\n-${{ matrix.elixir }}\\\n-${{ matrix.otp }}\\\n-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}\\\n-${{ steps.setup-beam.outputs.setup-beam-version }}\""
+                        }
+                      ]
+                    ],
+                    [name: "Get dependencies", run: "mix deps.get"],
+                    [name: "Compile dependencies", run: "MIX_ENV=test mix deps.compile"],
+                    [
+                      name: "Compile project",
+                      run: "MIX_ENV=test mix compile --warnings-as-errors"
+                    ],
+                    [
+                      name: "Check unused dependencies",
+                      if: "${{ matrix.lint }}",
+                      run: "mix deps.unlock --check-unused"
+                    ],
+                    [
+                      name: "Check code format",
+                      if: "${{ matrix.lint }}",
+                      run: "mix format --check-formatted"
+                    ],
+                    [name: "Lint code", if: "${{ matrix.lint }}", run: "mix credo --strict"],
+                    [name: "Run tests", if: "${{ !matrix.coverage }}", run: "mix test"],
+                    [
+                      name: "Run tests with coverage",
+                      if: "${{ matrix.coverage }}",
+                      run: "mix coveralls.github"
+                    ],
+                    [
+                      name: "Static code analysis",
+                      if: "${{ matrix.lint }}",
+                      run: "mix dialyzer --format github --force-check"
                     ]
                   ]
                 ]
               ]
-            }
+            ]
+          }
 
     prove "exclude workflow",
           Workflow.eval("priv/exclude.exs") ==
