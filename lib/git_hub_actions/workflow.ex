@@ -28,7 +28,7 @@ defmodule GitHubActions.Workflow do
 
   With :skip, you can handle optional parts in a workflow script.
 
-  ```elixir
+  ~S```elixir
   defmodule Simple do
     use GitHubActions.Workflow
 
@@ -68,7 +68,7 @@ defmodule GitHubActions.Workflow do
   It is also possible to add steps when a dependency is available in the current
   project.
 
-  ```elixir
+  ~S```elixir
   defmodule Simple do
     use GitHubActions.Workflow
 
@@ -166,6 +166,10 @@ defmodule GitHubActions.Workflow do
   end
 
   defp map({_key, :skip}), do: :skip
+
+  defp map({key, value}) when is_tuple(value) do
+    {ConvCase.to_kebab(key), value}
+  end
 
   defp map({key, value}) do
     {ConvCase.to_kebab(key), map(value)}

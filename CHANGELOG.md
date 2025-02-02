@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2 2025/02/02
+
+- Update `priv/default.exs` to improve readability.
+
 ## 0.3.1 2025/01/23
 
 - Add Elixir version `1.18.2` to config

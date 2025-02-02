@@ -2,7 +2,7 @@ defmodule GitHubActions.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/hrzndhrn/git_hub_actions"
-  @version "0.3.1"
+  @version "0.3.2"
 
   def project do
     [
@@ -71,6 +71,7 @@ defmodule GitHubActions.MixProject do
 
   defp deps do
     [
+      # dev/test
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.25", only: [:dev], runtime: false},
