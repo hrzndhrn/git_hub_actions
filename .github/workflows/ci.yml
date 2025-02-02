@@ -14,6 +14,8 @@ jobs:
         include:
           - elixir: '1.18.2'
             otp: '27.2'
+            coverage: true
+            lint: true
           - elixir: '1.18.2'
             otp: '26.2'
           - elixir: '1.18.2'
@@ -41,18 +43,36 @@ jobs:
         uses: actions/cache@v4
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}
+          key: |
+            deps
+            -${{ runner.os }}
+            -${{ matrix.elixir }}
+            -${{ matrix.otp }}
+            -${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+            -${{ steps.setup-beam.outputs.setup-beam-version }}
       - name: Restore _build
         uses: actions/cache@v4
         with:
           path: _build
-          key: _build-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}
+          key: |
+            _build
+            -${{ runner.os }}
+            -${{ matrix.elixir }}
+            -${{ matrix.otp }}
+            -${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+            -${{ steps.setup-beam.outputs.setup-beam-version }}
       - name: Restore test/support/plts
-        if: ${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}
+        if: ${{ matrix.lint }}
         uses: actions/cache@v4
         with:
           path: test/support/plts
-          key: test/support/plts-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-${{ steps.setup-beam.outputs.setup-beam-version }}
+          key: |
+            test/support/plts
+            -${{ runner.os }}
+            -${{ matrix.elixir }}
+            -${{ matrix.otp }}
+            -${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+            -${{ steps.setup-beam.outputs.setup-beam-version }}
       - name: Get dependencies
         run: mix deps.get
       - name: Compile dependencies
@@ -60,20 +80,20 @@ jobs:
       - name: Compile project
         run: MIX_ENV=test mix compile --warnings-as-errors
       - name: Check unused dependencies
-        if: ${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}
+        if: ${{ matrix.lint }}
         run: mix deps.unlock --check-unused
       - name: Check code format
-        if: ${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}
+        if: ${{ matrix.lint }}
         run: mix format --check-formatted
       - name: Lint code
-        if: ${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}
+        if: ${{ matrix.lint }}
         run: mix credo --strict
       - name: Run tests
-        if: ${{ !(matrix.elixir == '1.18.2' && matrix.otp == '27.2') }}
+        if: ${{ !matrix.coverage }}
         run: mix test
       - name: Run tests with coverage
-        if: ${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}
+        if: ${{ matrix.coverage }}
         run: mix coveralls.github
       - name: Static code analysis
-        if: ${{ matrix.elixir == '1.18.2' && matrix.otp == '27.2' }}
+        if: ${{ matrix.lint }}
         run: mix dialyzer --format github --force-check
