@@ -1,5 +1,5 @@
 defmodule GitHubActions.Workflow.MixTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias GitHubActions.Config
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3 2025/03/10
+
+- Add Elixir version `1.18.3` to config
+- Add Erlang version `27.3` to config
+
 ## 0.3.2 2025/02/02
 
 - Update `priv/default.exs` to improve readability.
