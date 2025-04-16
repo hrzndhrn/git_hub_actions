@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.4 2025/03/10
+
+- Set `runs-on: ubuntu-24.04` for linux as default.
+
 ## 0.3.3 2025/03/10
 
 - Add Elixir version `1.18.3` to config

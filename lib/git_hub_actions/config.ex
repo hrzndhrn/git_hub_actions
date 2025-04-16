@@ -11,7 +11,7 @@ defmodule GitHubActions.Config do
 
   config :linux,
     name: "Ubuntu",
-    runs_on: "ubuntu-20.04"
+    runs_on: "ubuntu-24.04"
 
   config key: "value"
   ```
@@ -78,7 +78,7 @@ defmodule GitHubActions.Config do
       :bar
 
       iex> Config.get([:linux, :runs_on])
-      "ubuntu-20.04"
+      "ubuntu-24.04"
 
       iex> Config.get(:foo)
       nil
@@ -114,10 +114,10 @@ defmodule GitHubActions.Config do
       [:linux]
 
       iex> Config.fetch!([:linux, :runs_on])
-      "ubuntu-20.04"
+      "ubuntu-24.04"
 
       iex> Config.fetch!([:linux, :foo])
-      ** (KeyError) key :foo not found in: [name: \"Ubuntu\", runs_on: \"ubuntu-20.04\"]
+      ** (KeyError) key :foo not found in: [name: \"Ubuntu\", runs_on: \"ubuntu-24.04\"]
   """
   @spec fetch!(key() | keys()) :: value()
   def fetch!(keys), do: Access.fetch!(config!(), keys)

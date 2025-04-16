@@ -53,7 +53,7 @@ be changed in the configuration under `input: [default: "my_workflow.exs"]`.
 
 ## Defaults
 
-The defaults create a workflow file that runs on `ubuntu-20.04`. The matrix is
+The defaults create a workflow file that runs on `ubuntu-24.04`. The matrix is
 created with the setting of `elixir` from the relevant project and the `OTP`
 versions `> 21.0.0`.
 
