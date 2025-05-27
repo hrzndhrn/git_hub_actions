@@ -3,7 +3,6 @@
 ## 0.3.5 2025/05/27
 
 - Add Elixir version `1.18.4` to config
-- Add Erlang version `28.0` to config
 
 ## 0.3.4 2025/03/10
 
