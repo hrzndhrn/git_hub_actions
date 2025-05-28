@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.5 2025/05/27
+## 0.3.5 2025/05/28
 
 - Add Elixir version `1.18.4` to config
 
