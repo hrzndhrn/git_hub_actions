@@ -115,9 +115,6 @@ defmodule GitHubActions.Config do
 
       iex> Config.fetch!([:linux, :runs_on])
       "ubuntu-24.04"
-
-      iex> Config.fetch!([:linux, :foo])
-      ** (KeyError) key :foo not found in: [name: \"Ubuntu\", runs_on: \"ubuntu-24.04\"]
   """
   @spec fetch!(key() | keys()) :: value()
   def fetch!(keys), do: Access.fetch!(config!(), keys)

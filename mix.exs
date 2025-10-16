@@ -2,7 +2,7 @@ defmodule GitHubActions.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/hrzndhrn/git_hub_actions"
-  @version "0.3.6"
+  @version "0.3.7"
 
   def project do
     [
@@ -18,7 +18,7 @@ defmodule GitHubActions.MixProject do
       aliases: aliases(),
       dialyzer: dialyzer(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: preferred_cli_env(),
+      test_ignore_filters: [~r'test/support/.*', ~r'test/fixtures/.*'],
       package: package()
     ]
   end
@@ -38,21 +38,23 @@ defmodule GitHubActions.MixProject do
     ]
   end
 
+  def cli do
+    [
+      preferred_envs: [
+        carp: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.html": :test,
+        "coveralls.github": :test
+      ]
+    ]
+  end
+
   defp package do
     [
       maintainers: ["Marcus Kruse"],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url}
-    ]
-  end
-
-  def preferred_cli_env do
-    [
-      carp: :test,
-      coveralls: :test,
-      "coveralls.detail": :test,
-      "coveralls.html": :test,
-      "coveralls.github": :test
     ]
   end
 
