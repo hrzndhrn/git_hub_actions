@@ -130,15 +130,7 @@ defmodule GitHubActions.Default do
     ]
   end
 
-  defp setup_elixir(:macos) do
-    [
-      name: "Setup Elixir",
-      id: "setup-beam",
-      run: "brew install elixir"
-    ]
-  end
-
-  defp setup_elixir(:windows) do
+  defp setup_elixir(os) when os in [:macos, :windows] do
     [
       name: "Setup Elixir",
       id: "setup-beam",

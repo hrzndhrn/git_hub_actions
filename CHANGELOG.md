@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.8 2025/10/17
+
+- Upate elixir setup for macOS
+
 ## 0.3.7 2025/10/16
 
 - Add Elixir version `1.19.0` to config
