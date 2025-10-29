@@ -56,7 +56,7 @@ defmodule GitHubActions.Workflow do
       )
     end
 
-    defp job(os, cofig) do
+    defp job(os, config) do
       case :jobs |> Config.get([]) |> Enum.member?(os) do
         true -> config
         false -> :skip

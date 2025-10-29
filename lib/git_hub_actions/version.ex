@@ -286,7 +286,7 @@ defmodule GitHubActions.Version do
   defp range(_version, _range, versions), do: Enum.reverse(versions)
 
   @doc """
-  Returns the requiement for the given `version` and `operator`.
+  Returns the requirement for the given `version` and `operator`.
 
   ## Examples
 

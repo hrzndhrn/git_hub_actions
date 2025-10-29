@@ -1,12 +1,16 @@
 # Changelog
 
+## 0.3.10 2025/10/29
+
+- Fix typos
+
 ## 0.3.9 2025/10/21
 
 - Add Elixir version `1.19.1` to config
 
 ## 0.3.8 2025/10/17
 
-- Upate elixir setup for macOS
+- Update elixir setup for macOS
 
 ## 0.3.7 2025/10/16
 
@@ -22,7 +26,7 @@
 
 ## 0.3.4 2025/03/10
 
-- Set `runs-on: ubuntu-24.04` for linux as default.
+- Set `runs-on: ubuntu-24.04` for linux as default
 
 ## 0.3.3 2025/03/10
 
@@ -31,7 +35,7 @@
 
 ## 0.3.2 2025/02/02
 
-- Update `priv/default.exs` to improve readability.
+- Update `priv/default.exs` to improve readability
 
 ## 0.3.1 2025/01/23
 
@@ -39,10 +43,10 @@
 
 ## 0.3.0 2024/12/30
 
-- Add setup-beam-version to cache keys.
+- Add setup-beam-version to cache keys
 - Add `GitHubActions.Versions.minimize/1`
-- Reduce jobs in the default workflow script.
-- Update docs.
+- Reduce jobs in the default workflow script
+- Update docs
 - Add Elixir version `1.18.1` to config
 
 ## 0.2.27 2024/12/23
@@ -61,7 +65,7 @@
 ## 0.2.24 2024/07/07
 
 - Add Elixir version `1.17.2` to config
-- Make `GitHubActions.Version` avaialable in workflow scripts
+- Make `GitHubActions.Version` available in workflow scripts
 - Add the functions `GitHubActions.Version.major/1`, 
   `GitHubActions.Version.minor/1` and `GitHubActions.Version.patch/1`
 - Add the option `--elixir`/`-e` to `mix gha`. The given version will be 
@@ -72,7 +76,7 @@
 ## 0.2.23 2024/06/23
 
 - Update inspect implementation for `GitHubActions.Version`
-- Require Elixir verions 1.13
+- Require Elixir version 1.13
 - Add Elixir version `1.17.1` to config
 - Add Erlang version `27.0` to config
 

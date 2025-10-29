@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Gha do
 
   ## Command line options
   - `--config`, `-c` - specifies the config file
-  - `--elixir`, `-e` - puts the given Elixir verion to the config
+  - `--elixir`, `-e` - puts the given Elixir version to the config
   - `--output`, `-o` - specifites the output file, defaults to
     `.github/workflows/ci.yml`
   - `--workflow`, `-w` - specifies the workflow script

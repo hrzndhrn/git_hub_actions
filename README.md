@@ -38,5 +38,5 @@ $> mix gha
 * creating .github/workflows/ci.yml
 ```
 
-The default conifg and the information to customise the workflow yml generation
+The default config and the information to customise the workflow yml generation
 can be found in the [documentation](https://hexdocs.pm/git_hub_actions/usage.html).
