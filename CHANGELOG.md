@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.10 2025/11/02
+
+- Add Elixir version `1.19.2` to config
+
 ## 0.3.10 2025/10/29
 
 - Fix typos
