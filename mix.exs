@@ -2,7 +2,7 @@ defmodule GitHubActions.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/hrzndhrn/git_hub_actions"
-  @version "0.3.13"
+  @version "0.3.14"
 
   def project do
     [
