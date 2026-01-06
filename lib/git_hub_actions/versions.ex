@@ -63,7 +63,7 @@ defmodule GitHubActions.Versions do
       %GitHubActions.Version{major: 1, minor: 19, patch: 4}
 
       iex> Versions.latest(:otp)
-      %GitHubActions.Version{major: 28, minor: 2}
+      %GitHubActions.Version{major: 28, minor: 3}
   """
   @spec latest(versions() | key()) :: Version.t()
   def latest(versions_or_key) when is_list(versions_or_key) do
@@ -155,7 +155,7 @@ defmodule GitHubActions.Versions do
        "21.0", "21.1", "21.2", "21.3", "22.0", "22.1", "22.2", "22.3", "23.0",
        "23.1", "23.2", "23.3", "24.0", "24.1", "24.2", "24.3", "25.0", "25.1",
        "25.2", "25.3", "26.0", "26.1", "26.2", "27.0", "27.1", "27.2", "27.3",
-       "28.0", "28.1", "28.2"
+       "28.0", "28.1", "28.2", "28.3"
       ]
   """
   @spec latest_minor(versions_list() | key()) :: [Version.t()]
@@ -242,7 +242,7 @@ defmodule GitHubActions.Versions do
       ["1.19.4"]
 
       iex> Versions.latest_major(:otp) |> Enum.map(&to_string/1)
-      ["17.5", "18.3", "19.3", "20.3", "21.3", "22.3", "23.3", "24.3", "25.3", "26.2", "27.3", "28.2"]
+      ["17.5", "18.3", "19.3", "20.3", "21.3", "22.3", "23.3", "24.3", "25.3", "26.2", "27.3", "28.3"]
   """
   @spec latest_major(versions_list() | key()) :: [Version.t()]
   def latest_major(versions_or_key) when is_list(versions_or_key) do
@@ -738,7 +738,7 @@ defmodule GitHubActions.Versions do
       iex> Enum.map(matrix[:elixir], &to_string/1)
       ["1.12.3", "1.13.4", "1.14.5", "1.15.8", "1.16.3", "1.17.3", "1.18.4", "1.19.4"]
       iex> Enum.map(matrix[:otp], &to_string/1)
-      ["22.3", "23.3", "24.3", "25.3", "26.2", "27.3", "28.2"]
+      ["22.3", "23.3", "24.3", "25.3", "26.2", "27.3", "28.3"]
       iex> for [{k1, v1}, {k2, v2}] <- matrix[:exclude] do
       ...>   [{k1, to_string(v1)}, {k2, to_string(v2)}]
       ...> end
@@ -746,25 +746,25 @@ defmodule GitHubActions.Versions do
         [elixir: "1.12.3", otp: "25.3"],
         [elixir: "1.12.3", otp: "26.2"],
         [elixir: "1.12.3", otp: "27.3"],
-        [elixir: "1.12.3", otp: "28.2"],
+        [elixir: "1.12.3", otp: "28.3"],
         [elixir: "1.13.4", otp: "26.2"],
         [elixir: "1.13.4", otp: "27.3"],
-        [elixir: "1.13.4", otp: "28.2"],
+        [elixir: "1.13.4", otp: "28.3"],
         [elixir: "1.14.5", otp: "22.3"],
         [elixir: "1.14.5", otp: "27.3"],
-        [elixir: "1.14.5", otp: "28.2"],
+        [elixir: "1.14.5", otp: "28.3"],
         [elixir: "1.15.8", otp: "22.3"],
         [elixir: "1.15.8", otp: "23.3"],
         [elixir: "1.15.8", otp: "27.3"],
-        [elixir: "1.15.8", otp: "28.2"],
+        [elixir: "1.15.8", otp: "28.3"],
         [elixir: "1.16.3", otp: "22.3"],
         [elixir: "1.16.3", otp: "23.3"],
         [elixir: "1.16.3", otp: "27.3"],
-        [elixir: "1.16.3", otp: "28.2"],
+        [elixir: "1.16.3", otp: "28.3"],
         [elixir: "1.17.3", otp: "22.3"],
         [elixir: "1.17.3", otp: "23.3"],
         [elixir: "1.17.3", otp: "24.3"],
-        [elixir: "1.17.3", otp: "28.2"],
+        [elixir: "1.17.3", otp: "28.3"],
         [elixir: "1.18.4", otp: "22.3"],
         [elixir: "1.18.4", otp: "23.3"],
         [elixir: "1.18.4", otp: "24.3"],
@@ -795,10 +795,10 @@ defmodule GitHubActions.Versions do
         [elixir: "1.18.4", otp: "25.3"],
         [elixir: "1.18.4", otp: "26.2"],
         [elixir: "1.18.4", otp: "27.3"],
-        [elixir: "1.18.4", otp: "28.2"],
+        [elixir: "1.18.4", otp: "28.3"],
         [elixir: "1.19.0", otp: "26.2"],
         [elixir: "1.19.0", otp: "27.3"],
-        [elixir: "1.19.0", otp: "28.2"]
+        [elixir: "1.19.0", otp: "28.3"]
       ]
 
       iex> Versions.matrix([], elixir: ">= 1.9.0", otp: ">= 22.0.0")
