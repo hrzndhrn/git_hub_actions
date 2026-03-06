@@ -2,13 +2,13 @@ defmodule GitHubActions.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/hrzndhrn/git_hub_actions"
-  @version "0.3.17"
+  @version "0.4.0"
 
   def project do
     [
       app: :git_hub_actions,
       version: @version,
-      elixir: "~> 1.13",
+      elixir: "~> 1.15",
       name: "GitHubActions",
       description: "A little tool to write GitHub actions in Elixir",
       source_url: @source_url,
