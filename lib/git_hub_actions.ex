@@ -125,11 +125,17 @@ defmodule GitHubActions do
 
   defp local, do: @dir
 
-  defp global, do: Path.join(System.user_home!(), @dir)
-
   defp local(file), do: Path.join(@dir, file)
 
-  defp global(file), do: Path.join([System.user_home!(), @dir, file])
+  defp global, do: Path.join(user_home(), @dir)
+
+  defp global(file), do: Path.join([user_home(), @dir, file])
+
+  # The home directory can be overridden via application env (used in tests),
+  # defaulting to the user's home directory.
+  defp user_home do
+    Application.get_env(:git_hub_actions, :user_home) || System.user_home!()
+  end
 
   defp priv(file), do: Path.join(:code.priv_dir(:git_hub_actions), file)
 

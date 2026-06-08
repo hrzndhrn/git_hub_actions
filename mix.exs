@@ -78,7 +78,6 @@ defmodule GitHubActions.MixProject do
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.25", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.15", only: [:dev, :test]},
-      {:mock, "~> 0.3", only: :test},
       {:prove, "~> 0.1", only: [:dev, :test]},
       {:recode, "~> 0.1", only: :dev},
       {:yamerl, "~> 0.8", only: [:dev, :test]}

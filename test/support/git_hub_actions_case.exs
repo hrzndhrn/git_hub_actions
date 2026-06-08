@@ -2,7 +2,6 @@ defmodule GitHubActionsCase do
   use ExUnit.CaseTemplate
 
   import ExUnit.CaptureIO
-  import Mock
 
   @dir ".gha"
   @fixtures "test/fixtures"
@@ -40,14 +39,17 @@ defmodule GitHubActionsCase do
     end
   end
 
-  setup_with_mocks([
-    {System, [:passthrough], [user_home!: fn -> @home end]}
-  ]) do
+  setup do
+    # Point the global config lookup at the test home dir.
+    Application.put_env(:git_hub_actions, :user_home, @home)
+
     # Create local .gha dir for config.
     File.mkdir(@dir)
     File.mkdir_p(Path.join(@home, @dir))
 
     on_exit(fn ->
+      Application.delete_env(:git_hub_actions, :user_home)
+
       File.rm_rf!(@dir)
       File.rm_rf!(@home)
 
