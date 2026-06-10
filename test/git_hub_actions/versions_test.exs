@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["28.0/4"], elixir: ["1.18.4", "1.19.0/5"]]
+             [otp: ["29.0"], elixir: ["1.20.0/1"]]
   end
 
   describe "get/2" do
@@ -147,7 +147,10 @@ defmodule GitHubActions.VersionsTest do
                "1.19.2",
                "1.19.3",
                "1.19.4",
-               "1.19.5"
+               "1.19.5",
+               # v1.20.0/1
+               "1.20.0",
+               "1.20.1"
              ]
     end
 
@@ -203,7 +206,9 @@ defmodule GitHubActions.VersionsTest do
                  "28.1",
                  "28.2",
                  "28.3",
-                 "28.4"
+                 "28.4",
+                 "28.5",
+                 "29.0"
                ]
     end
   end
@@ -317,7 +322,9 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 19, patch: 2},
                %Version{major: 1, minor: 19, patch: 3},
                %Version{major: 1, minor: 19, patch: 4},
-               %Version{major: 1, minor: 19, patch: 5}
+               %Version{major: 1, minor: 19, patch: 5},
+               %Version{major: 1, minor: 20, patch: 0},
+               %Version{major: 1, minor: 20, patch: 1}
              ]
     end
 
@@ -356,7 +363,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 1, minor: 16, patch: 3},
                %Version{major: 1, minor: 17, patch: 3},
                %Version{major: 1, minor: 18, patch: 4},
-               %Version{major: 1, minor: 19, patch: 5}
+               %Version{major: 1, minor: 19, patch: 5},
+               %Version{major: 1, minor: 20, patch: 1}
              ]
     end
   end
@@ -375,7 +383,8 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 25, minor: 3},
                %Version{major: 26, minor: 2},
                %Version{major: 27, minor: 3},
-               %Version{major: 28, minor: 4}
+               %Version{major: 28, minor: 5},
+               %Version{major: 29, minor: 0}
              ]
     end
   end
@@ -471,120 +480,172 @@ defmodule GitHubActions.VersionsTest do
 
       assert Versions.incompatible(@versions, otp: otp, elixir: elixir) == [
                [
-                 otp: %Version{major: 22, minor: 3},
-                 elixir: %Version{major: 1, minor: 14, patch: 5}
+                 otp: %GitHubActions.Version{major: 22, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 14, patch: 5}
                ],
                [
-                 otp: %Version{major: 22, minor: 3},
-                 elixir: %Version{major: 1, minor: 15, patch: 8}
+                 otp: %GitHubActions.Version{major: 22, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 15, patch: 8}
                ],
                [
-                 otp: %Version{major: 22, minor: 3},
-                 elixir: %Version{major: 1, minor: 16, patch: 3}
+                 otp: %GitHubActions.Version{major: 22, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3}
                ],
                [
-                 otp: %Version{major: 22, minor: 3},
-                 elixir: %Version{major: 1, minor: 17, patch: 3}
+                 otp: %GitHubActions.Version{major: 22, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3}
                ],
                [
-                 otp: %Version{major: 22, minor: 3},
-                 elixir: %Version{major: 1, minor: 18, patch: 4}
+                 otp: %GitHubActions.Version{major: 22, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 4}
                ],
                [
-                 otp: %Version{major: 22, minor: 3},
-                 elixir: %Version{major: 1, minor: 19, patch: 5}
+                 otp: %GitHubActions.Version{major: 22, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 19, patch: 5}
                ],
                [
-                 otp: %Version{major: 23, minor: 3},
-                 elixir: %Version{major: 1, minor: 15, patch: 8}
+                 otp: %GitHubActions.Version{major: 22, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 20, patch: 1}
                ],
                [
-                 otp: %Version{major: 23, minor: 3},
-                 elixir: %Version{major: 1, minor: 16, patch: 3}
+                 otp: %GitHubActions.Version{major: 23, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 15, patch: 8}
                ],
                [
-                 otp: %Version{major: 23, minor: 3},
-                 elixir: %Version{major: 1, minor: 17, patch: 3}
+                 otp: %GitHubActions.Version{major: 23, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3}
                ],
                [
-                 otp: %Version{major: 23, minor: 3},
-                 elixir: %Version{major: 1, minor: 18, patch: 4}
+                 otp: %GitHubActions.Version{major: 23, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3}
                ],
                [
-                 otp: %Version{major: 23, minor: 3},
-                 elixir: %Version{major: 1, minor: 19, patch: 5}
+                 otp: %GitHubActions.Version{major: 23, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 4}
                ],
                [
-                 otp: %Version{major: 24, minor: 3},
-                 elixir: %Version{major: 1, minor: 17, patch: 3}
+                 otp: %GitHubActions.Version{major: 23, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 19, patch: 5}
                ],
                [
-                 otp: %Version{major: 24, minor: 3},
-                 elixir: %Version{major: 1, minor: 18, patch: 4}
+                 otp: %GitHubActions.Version{major: 23, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 20, patch: 1}
                ],
                [
-                 otp: %Version{major: 24, minor: 3},
-                 elixir: %Version{major: 1, minor: 19, patch: 5}
+                 otp: %GitHubActions.Version{major: 24, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3}
                ],
                [
-                 otp: %Version{major: 25, minor: 3},
-                 elixir: %Version{major: 1, minor: 12, patch: 3}
+                 otp: %GitHubActions.Version{major: 24, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 4}
                ],
                [
-                 otp: %Version{major: 25, minor: 3},
-                 elixir: %Version{major: 1, minor: 19, patch: 5}
+                 otp: %GitHubActions.Version{major: 24, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 19, patch: 5}
                ],
                [
-                 otp: %Version{major: 26, minor: 2},
-                 elixir: %Version{major: 1, minor: 12, patch: 3}
+                 otp: %GitHubActions.Version{major: 24, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 20, patch: 1}
                ],
                [
-                 otp: %Version{major: 26, minor: 2},
-                 elixir: %Version{major: 1, minor: 13, patch: 4}
+                 otp: %GitHubActions.Version{major: 25, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %Version{major: 27, minor: 3},
-                 elixir: %Version{major: 1, minor: 12, patch: 3}
+                 otp: %GitHubActions.Version{major: 25, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 19, patch: 5}
                ],
                [
-                 otp: %Version{major: 27, minor: 3},
-                 elixir: %Version{major: 1, minor: 13, patch: 4}
+                 otp: %GitHubActions.Version{major: 25, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 20, patch: 1}
                ],
                [
-                 otp: %Version{major: 27, minor: 3},
-                 elixir: %Version{major: 1, minor: 14, patch: 5}
+                 otp: %GitHubActions.Version{major: 26, minor: 2},
+                 elixir: %GitHubActions.Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %Version{major: 27, minor: 3},
-                 elixir: %Version{major: 1, minor: 15, patch: 8}
+                 otp: %GitHubActions.Version{major: 26, minor: 2},
+                 elixir: %GitHubActions.Version{major: 1, minor: 13, patch: 4}
                ],
                [
-                 otp: %Version{major: 27, minor: 3},
-                 elixir: %Version{major: 1, minor: 16, patch: 3}
+                 otp: %GitHubActions.Version{major: 26, minor: 2},
+                 elixir: %GitHubActions.Version{major: 1, minor: 20, patch: 1}
                ],
                [
-                 otp: %Version{major: 28, minor: 4},
-                 elixir: %Version{major: 1, minor: 12, patch: 3}
+                 otp: %GitHubActions.Version{major: 27, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %Version{major: 28, minor: 4},
-                 elixir: %Version{major: 1, minor: 13, patch: 4}
+                 otp: %GitHubActions.Version{major: 27, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 13, patch: 4}
                ],
                [
-                 otp: %Version{major: 28, minor: 4},
-                 elixir: %Version{major: 1, minor: 14, patch: 5}
+                 otp: %GitHubActions.Version{major: 27, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 14, patch: 5}
                ],
                [
-                 otp: %Version{major: 28, minor: 4},
-                 elixir: %Version{major: 1, minor: 15, patch: 8}
+                 otp: %GitHubActions.Version{major: 27, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 15, patch: 8}
                ],
                [
-                 otp: %Version{major: 28, minor: 4},
-                 elixir: %Version{major: 1, minor: 16, patch: 3}
+                 otp: %GitHubActions.Version{major: 27, minor: 3},
+                 elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3}
                ],
                [
-                 otp: %Version{major: 28, minor: 4},
-                 elixir: %Version{major: 1, minor: 17, patch: 3}
+                 otp: %GitHubActions.Version{major: 28, minor: 5},
+                 elixir: %GitHubActions.Version{major: 1, minor: 12, patch: 3}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 28, minor: 5},
+                 elixir: %GitHubActions.Version{major: 1, minor: 13, patch: 4}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 28, minor: 5},
+                 elixir: %GitHubActions.Version{major: 1, minor: 14, patch: 5}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 28, minor: 5},
+                 elixir: %GitHubActions.Version{major: 1, minor: 15, patch: 8}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 28, minor: 5},
+                 elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 28, minor: 5},
+                 elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 elixir: %GitHubActions.Version{major: 1, minor: 12, patch: 3}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 elixir: %GitHubActions.Version{major: 1, minor: 13, patch: 4}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 elixir: %GitHubActions.Version{major: 1, minor: 14, patch: 5}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 elixir: %GitHubActions.Version{major: 1, minor: 15, patch: 8}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 4}
+               ],
+               [
+                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 elixir: %GitHubActions.Version{major: 1, minor: 19, patch: 5}
                ]
              ]
     end
