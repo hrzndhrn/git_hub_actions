@@ -57,7 +57,7 @@ defmodule GitHubActions.WorkflowTest do
                           "1.17.3",
                           "1.18.4",
                           "1.19.5",
-                          "1.20.1"
+                          "1.20.2"
                         ],
                         otp: [
                           "21.3",
@@ -127,12 +127,12 @@ defmodule GitHubActions.WorkflowTest do
                           [elixir: "1.19.5", otp: "24.3"],
                           [elixir: "1.19.5", otp: "25.3"],
                           [elixir: "1.19.5", otp: "29.0"],
-                          [elixir: "1.20.1", otp: "21.3"],
-                          [elixir: "1.20.1", otp: "22.3"],
-                          [elixir: "1.20.1", otp: "23.3"],
-                          [elixir: "1.20.1", otp: "24.3"],
-                          [elixir: "1.20.1", otp: "25.3"],
-                          [elixir: "1.20.1", otp: "26.2"]
+                          [elixir: "1.20.2", otp: "21.3"],
+                          [elixir: "1.20.2", otp: "22.3"],
+                          [elixir: "1.20.2", otp: "23.3"],
+                          [elixir: "1.20.2", otp: "24.3"],
+                          [elixir: "1.20.2", otp: "25.3"],
+                          [elixir: "1.20.2", otp: "26.2"]
                         ]
                       ]
                     ]
@@ -176,9 +176,9 @@ defmodule GitHubActions.WorkflowTest do
                   strategy: [
                     matrix: [
                       include: [
-                        [elixir: "1.20.1", otp: "29.0", coverage: "true", lint: "true"],
-                        [elixir: "1.20.1", otp: "28.5"],
-                        [elixir: "1.20.1", otp: "27.3"],
+                        [elixir: "1.20.2", otp: "29.0", coverage: "true", lint: "true"],
+                        [elixir: "1.20.2", otp: "28.5"],
+                        [elixir: "1.20.2", otp: "27.3"],
                         [elixir: "1.19.5", otp: "26.2"],
                         [elixir: "1.18.4", otp: "25.3"],
                         [elixir: "1.17.3", otp: "25.3"],
@@ -286,7 +286,7 @@ defmodule GitHubActions.WorkflowTest do
                           "1.17.3",
                           "1.18.4",
                           "1.19.5",
-                          "1.20.1"
+                          "1.20.2"
                         ],
                         otp: ["24.3", "25.3", "26.2", "27.3", "28.5", "29.0"],
                         exclude: [
@@ -304,9 +304,9 @@ defmodule GitHubActions.WorkflowTest do
                           [elixir: "1.19.5", otp: "24.3"],
                           [elixir: "1.19.5", otp: "25.3"],
                           [elixir: "1.19.5", otp: "29.0"],
-                          [elixir: "1.20.1", otp: "24.3"],
-                          [elixir: "1.20.1", otp: "25.3"],
-                          [elixir: "1.20.1", otp: "26.2"]
+                          [elixir: "1.20.2", otp: "24.3"],
+                          [elixir: "1.20.2", otp: "25.3"],
+                          [elixir: "1.20.2", otp: "26.2"]
                         ]
                       ]
                     ],
@@ -341,7 +341,7 @@ defmodule GitHubActions.WorkflowTest do
                       ],
                       [
                         name: "Restore test/support/plts",
-                        if: "${{ matrix.elixir == '1.20.1' && matrix.otp == '29.0' }}",
+                        if: "${{ matrix.elixir == '1.20.2' && matrix.otp == '29.0' }}",
                         uses: "actions/cache@v4",
                         with: [
                           path: "test/support/plts",
@@ -357,32 +357,32 @@ defmodule GitHubActions.WorkflowTest do
                       ],
                       [
                         name: "Check unused dependencies",
-                        if: "${{ matrix.elixir == '1.20.1' && matrix.otp == '29.0' }}",
+                        if: "${{ matrix.elixir == '1.20.2' && matrix.otp == '29.0' }}",
                         run: "mix deps.unlock --check-unused"
                       ],
                       [
                         name: "Check code format",
-                        if: "${{ matrix.elixir == '1.20.1' && matrix.otp == '29.0' }}",
+                        if: "${{ matrix.elixir == '1.20.2' && matrix.otp == '29.0' }}",
                         run: "mix format --check-formatted"
                       ],
                       [
                         name: "Lint code",
-                        if: "${{ matrix.elixir == '1.20.1' && matrix.otp == '29.0' }}",
+                        if: "${{ matrix.elixir == '1.20.2' && matrix.otp == '29.0' }}",
                         run: "mix credo --strict"
                       ],
                       [
                         name: "Run tests",
-                        if: "${{ !(matrix.elixir == '1.20.1' && matrix.otp == '29.0') }}",
+                        if: "${{ !(matrix.elixir == '1.20.2' && matrix.otp == '29.0') }}",
                         run: "mix test"
                       ],
                       [
                         name: "Run tests with coverage",
-                        if: "${{ matrix.elixir == '1.20.1' && matrix.otp == '29.0' }}",
+                        if: "${{ matrix.elixir == '1.20.2' && matrix.otp == '29.0' }}",
                         run: "mix coveralls.github"
                       ],
                       [
                         name: "Static code analysis",
-                        if: "${{ matrix.elixir == '1.20.1' && matrix.otp == '29.0' }}",
+                        if: "${{ matrix.elixir == '1.20.2' && matrix.otp == '29.0' }}",
                         run: "mix dialyzer --format github --force-check"
                       ]
                     ]

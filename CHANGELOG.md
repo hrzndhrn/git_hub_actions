@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2 2026/07/21
+
+- Add Elixir version `1.20.2` to config
+
 ## 0.4.1 2026/06/10
 
 - Add Elixir version `1.20.0/1` to config
