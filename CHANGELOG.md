@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.3 2026/08/24
+## 0.4.3 2026/08/30
 
 - Add Elixir version `1.20.3` to config
 
