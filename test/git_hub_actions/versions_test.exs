@@ -19,7 +19,7 @@ defmodule GitHubActions.VersionsTest do
 
   test "from_config/0" do
     assert List.last(Versions.from_config()) ==
-             [otp: ["29.0"], elixir: ["1.20.0/3"]]
+             [otp: ["29.0/1"], elixir: ["1.20.0/3"]]
   end
 
   describe "get/2" do
@@ -210,7 +210,8 @@ defmodule GitHubActions.VersionsTest do
                  "28.3",
                  "28.4",
                  "28.5",
-                 "29.0"
+                 "29.0",
+                 "29.1"
                ]
     end
   end
@@ -388,7 +389,7 @@ defmodule GitHubActions.VersionsTest do
                %Version{major: 26, minor: 2},
                %Version{major: 27, minor: 3},
                %Version{major: 28, minor: 5},
-               %Version{major: 29, minor: 0}
+               %Version{major: 29, minor: 1}
              ]
     end
   end
@@ -620,35 +621,35 @@ defmodule GitHubActions.VersionsTest do
                  elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3}
                ],
                [
-                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 otp: %GitHubActions.Version{major: 29, minor: 1},
                  elixir: %GitHubActions.Version{major: 1, minor: 12, patch: 3}
                ],
                [
-                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 otp: %GitHubActions.Version{major: 29, minor: 1},
                  elixir: %GitHubActions.Version{major: 1, minor: 13, patch: 4}
                ],
                [
-                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 otp: %GitHubActions.Version{major: 29, minor: 1},
                  elixir: %GitHubActions.Version{major: 1, minor: 14, patch: 5}
                ],
                [
-                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 otp: %GitHubActions.Version{major: 29, minor: 1},
                  elixir: %GitHubActions.Version{major: 1, minor: 15, patch: 8}
                ],
                [
-                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 otp: %GitHubActions.Version{major: 29, minor: 1},
                  elixir: %GitHubActions.Version{major: 1, minor: 16, patch: 3}
                ],
                [
-                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 otp: %GitHubActions.Version{major: 29, minor: 1},
                  elixir: %GitHubActions.Version{major: 1, minor: 17, patch: 3}
                ],
                [
-                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 otp: %GitHubActions.Version{major: 29, minor: 1},
                  elixir: %GitHubActions.Version{major: 1, minor: 18, patch: 4}
                ],
                [
-                 otp: %GitHubActions.Version{major: 29, minor: 0},
+                 otp: %GitHubActions.Version{major: 29, minor: 1},
                  elixir: %GitHubActions.Version{major: 1, minor: 19, patch: 5}
                ]
              ]

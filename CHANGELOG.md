@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.4 2026/09/18
+
+- Add Erlang version `29.1` to config
+
 ## 0.4.3 2026/08/30
 
 - Add Elixir version `1.20.3` to config

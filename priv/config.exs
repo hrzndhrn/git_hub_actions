@@ -161,7 +161,7 @@ config versions: [
            ]
          ],
          [
-           otp: ["29.0"],
+           otp: ["29.0/1"],
            elixir: [
              "1.20.0/3"
            ]
